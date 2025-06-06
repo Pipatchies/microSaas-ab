@@ -97,6 +97,9 @@ TastyRoad répond à ce besoin croissant d’expériences intégrées : **un tra
 ### 🎯 Diagramme de cas d'utilisation
 📄 [Voir le diagramme de cas d'utilisation](/docs/DiagrammeUseCase.webpuse-case-diagram.pdf)
 
+### 🎨 Maquettes figma
+📄 [Voir les maquettes figma](https://www.figma.com/design/4bto4UsSytyuMB3l4Y6HeE/TastyRoad?node-id=0-1&t=DUBhzxmOgN0ZA66D-1)
+
 ---
 
 🌍 *Avec TastyRoad, redonnez du goût à vos trajets*
