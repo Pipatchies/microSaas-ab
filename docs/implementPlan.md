@@ -23,6 +23,8 @@ npx create-next-app@latest tastyroad
 
 - Choisir d'utiliser Turbopack. Bundler ultra rapide qui permet d'optimiser le code et de réduire le temps de chargement des pages. Bien pour améliorer les performences de l'appli.
 
+- Ajouter Prettier pour formatter le code.
+
 ## 1.2 Shadcn
 
 - Installer le package `shadcn` avec `pnpm dlx shadcn@latest init`
@@ -67,5 +69,7 @@ django-admin startproject config src
 ```
 
 Cela va créer manage.py, un script qui va permettre de lancer les commandes Django (lancer le serveur, créer une app, faire les migrations, etc...), et un dossier config qui va regrouper la config générale, les routes principales et le déploiement du serveur.
+
+- Installer Pylint et Black pour le linting et le formatage du code.
 
 - Créer mes différentes app Django (à suivre...)
