@@ -28,5 +28,23 @@ services:
     depends_on:
       - postgres
 
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: tastyroad_frontend
+    restart: always
+    command: pnpm run dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - api
+
+
 volumes:
   postgres_data:
