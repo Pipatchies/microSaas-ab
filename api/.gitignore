@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+*.log
+
+# Virtual environment
+env/
+.env/
+.venv/
+
+# Django stuff
+db.sqlite3
+media/
+staticfiles/
+*.pot
+*.mo
+
+# Pytest / coverage
+.coverage
+.pytest_cache/
+htmlcov/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+*.env
+
+# Node (si jamais tu ajoutes du JS côté Django admin)
+node_modules/
