@@ -81,7 +81,12 @@ Cela va créer manage.py, un script qui va permettre de lancer les commandes Dja
 ```bash
 pip install pylint black
 ```
-
 Toutes les commandes doivent être lancées depuis l'environnement de dev créé précédemment.
 
 - Créer mes différentes app Django (à suivre...)
+
+- Pour lancer le serveur :
+
+```bash
+python manage.py runserver
+```
