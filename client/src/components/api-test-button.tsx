@@ -23,7 +23,7 @@ interface ApiHealthButtonProps {
 }
 
 export function ApiTestButton({
-  endpoint = "/api/test_db",
+  endpoint = "/api/test_db/",
   buttonText = "Tester la connexion API",
   title = "Test de connexion API",
   description = "Vérifiez l'état de votre API et de la base de données",
@@ -43,6 +43,8 @@ export function ApiTestButton({
     setError(null)
 
     try {
+      console.log("API URL:", process.env.NEXT_PUBLIC_API_URL)
+
       const response = await fetch(`${apiUrl}${endpoint}`)
 
       if (!response.ok) {
