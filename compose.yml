@@ -38,7 +38,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env
+      - ./client/.env
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
