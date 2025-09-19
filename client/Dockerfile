@@ -1,12 +1,12 @@
 FROM node:20
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package.json pnpm-lock.yaml* ./
 
 RUN npm install -g pnpm && pnpm install
 
-COPY src/ /usr/src/app
+COPY . .
 
 EXPOSE 3000
 

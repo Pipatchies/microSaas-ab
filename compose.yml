@@ -24,7 +24,7 @@ services:
     env_file:
       - .env
     volumes:
-     - ./api/src:/usr/src/app
+      - ./api/src:/usr/src/app
     depends_on:
       - postgres
 
@@ -34,16 +34,19 @@ services:
       dockerfile: Dockerfile
     container_name: tastyroad_frontend
     restart: always
-    command: pnpm run dev
     ports:
       - "3000:3000"
     env_file:
       - ./client/.env
     volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./client:/app
+      - /app/node_modules
     depends_on:
       - api
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
 
 
 volumes:
