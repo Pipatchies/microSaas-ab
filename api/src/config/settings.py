@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 """
 Django settings for the TastyRoad project.
 
@@ -140,7 +141,6 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 if "pytest" in sys.modules:
-    BASE_DIR = Path(__file__).resolve().parent.parent
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
