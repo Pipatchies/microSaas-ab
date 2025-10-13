@@ -1,4 +1,5 @@
 # TastyRoad 🛣️🍽️
+![Build Status](https://github.com/<ton-user>/tastyroad/actions/workflows/ci.yml/badge.svg)
 
 **L’aventure commence sur la route… et finit dans l’assiette !**
 
@@ -75,30 +76,155 @@ TastyRoad répond à ce besoin croissant d’expériences intégrées : **un tra
 
 ## 🧱 Stack technique
 
-| Côté           | Technologies utilisées                                                                 |
-|----------------|-----------------------------------------------------------------------------------------|
-| 💻 Frontend     | **Next.js**, **React**, **Typescript**, **Tailwind CSS**, **Mapbox**                     |
-| ⚙️ Backend       | **Django** (Python)                                                                |
-| 🗃️ Base de données | **PostgreSQL**                                                                       |
+| Côté | Technologies |
+|------|---------------|
+| 💻 Frontend | **Next.js 15**, **TypeScript**, **Tailwind CSS**, **Mapbox** |
+| ⚙️ Backend | **Django 5.2**, **REST Framework** |
+| 🗃️ Base de données | **PostgreSQL 16** |
+| 🧰 CI/CD | **GitHub Actions** |
+| 🐳 Conteneurisation | **Docker Compose v2** |
+| 🔐 Authentification | **Convex Auth** |
+| 🧪 Tests & Qualité | **Pylint**, **Black**, **Pytest**, **ESLint**, **Prettier**, **Vitest**, **Safety** |
+
+---
+
+## 🧰 Environnement de développement
+
+### ⚙️ Prérequis
+- **Docker Desktop**
+- **Node.js 20.x** et **Python 3.11**
+- **PNPM** (pour le frontend)
+- **Git**
+
+### 🔧 Installation rapide
+```bash
+# Cloner le projet
+git clone https://github.com/ton-compte/tastyroad.git
+cd tastyroad
+
+# Lancer toute la stack
+docker compose up --build
+```
+
+API → http://localhost:8000
+Frontend → http://localhost:3000
+
+---
+
+## 🧩 Variables d’environnement
+
+Fichier .env à la racine :
+
+```bash
+DEBUG=True
+SECRET_KEY=<your_secret_key_here>
+ALLOWED_HOSTS=localhost,127.0.0.1
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=<your_database_name>
+DB_USER=<your_db_user>
+DB_PASSWORD=<your_db_password>
+DB_HOST=postgres
+DB_PORT=5432
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+---
+
+## 🧪 Tests & Qualité du code
+
+📘 [Voir la documentation complète sur les outils de qualité](docs/technical/qualite-code.md)
+
+Commandes principales :
+```bash
+# Backend
+pylint src
+black --check .
+pytest
+safety check
+
+# Frontend
+pnpm lint
+pnpm prettier --check .
+pnpm test
+pnpm build
+```
+
+---
+
+## ⚙️ CI/CD Pipeline
+
+📘 [Voir la documentation complète sur la CI/CD](docs/technical/ci-cd.md)
+
+🔄 Automatisations
+
+- Lancement sur push ou pull_request → develop
+
+- Jobs :
+
+    - Backend : lint, test, sécurité
+
+    - Frontend : lint, test, build
+
+    - Docker : validation des images
+
+- Cache des dépendances (pip et pnpm)
+
+- Notifications Discord (optionnelles)
+
+---
+
+## 🐳 Dockerisation
+
+📘 [Voir la documentation Docker complète](docs/technical/dockerisation.md)
+
+Commandes principales :
+```bash
+docker compose up --build
+docker compose down -v
+docker exec -it tastyroad_api 
+```
+
+---
+
+## 🧰 Outils de développement
+
+📘 Voir la documentation détaillée
+
+- VSCode (lint/format)
+
+- Docker Desktop
+
+- Git + GitHub
+
+- Lefthook (pré-commit hooks)
+
+- Node 20 / Python 3.11
 
 ---
 
 ## 📦 Livrables
 
 ### 👩‍🏫 Présentation
-📄 [Voir la présentation](docs/DiapoTastyRoad.pdf)
+📄 [Voir la présentation](docs/fonctional/DiapoTastyRoad.pdf)
 
 ### 🖼️ Wireframes
-🔗 [Voir les wireframes](docs/Wireframes.png)
+🔗 [Voir les wireframes](docs/fonctional/Wireframes.png)
 
 ### 🗃️ MCD (Modèle Conceptuel de Données)
-📄 [Voir le MCD](/docs/MCD.webp)
+📄 [Voir le MCD](/docs/fonctional/MCD.webp)
 
 ### 🎯 Diagramme de cas d'utilisation
-📄 [Voir le diagramme de cas d'utilisation](/docs/DiagrammeUseCase.webpuse-case-diagram.pdf)
+📄 [Voir le diagramme de cas d'utilisation](/docs/fonctional/DiagrammeUseCase.webp)
 
 ### 🎨 Maquettes figma
 📄 [Voir les maquettes figma](https://www.figma.com/design/4bto4UsSytyuMB3l4Y6HeE/TastyRoad?node-id=0-1&t=DUBhzxmOgN0ZA66D-1)
+
+---
+
+## 👩‍💻 Auteur
+
+**Ariane Bertaud**
+Conceptrice Développeuse d’Applications – Promotion 2025
 
 ---
 
