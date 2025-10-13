@@ -19,7 +19,6 @@ pre-commit:
     backend-format:
       root: "api/src"
       run: black --check .
-      run: npx commitlint --edit "$1"
 
 commit-msg:
   commands:
