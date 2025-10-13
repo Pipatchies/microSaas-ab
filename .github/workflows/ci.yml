@@ -60,12 +60,13 @@ jobs:
           cache: pnpm
 
       - name: Enable Corepack (to use pnpm)
-        run: corepack enable
+        run: |
+          npm install -g corepack
+          corepack enable
+          corepack prepare pnpm@10.6.5 --activate
 
       - name: Install dependencies
-        run: |
-          corepack enable
-          pnpm install
+        run: pnpm install
 
       - name: Lint
         run: pnpm lint

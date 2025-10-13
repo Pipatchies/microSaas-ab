@@ -1,6 +1,13 @@
+"""
+Django settings for the TastyRoad project.
+
+Includes environment variable loading, app definitions, middleware,
+database configuration, and static files settings.
+"""
+
 from pathlib import Path
-import environ
 import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
