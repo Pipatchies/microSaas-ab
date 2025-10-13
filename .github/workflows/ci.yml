@@ -35,7 +35,7 @@ jobs:
         run: black --check .
 
       - name: Security audit
-        run: pip install safety && safety check
+        run: pip install safety && safety scan
 
       - name: Run backend tests (pytest)
         run: |

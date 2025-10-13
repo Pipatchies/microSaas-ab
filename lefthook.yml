@@ -40,7 +40,7 @@ pre-push:
       root: "api/src"
       run: |
         if [ -f "./env/Scripts/python.exe" ]; then
-          ./env/Scripts/python.exe -m safety check
+          ./env/Scripts/python.exe -m safety scan
         else
           python -m safety scan
         fi
