@@ -1,6 +1,8 @@
 # TastyRoad 🛣️🍽️
 ![Build Status](https://github.com/<ton-user>/tastyroad/actions/workflows/ci.yml/badge.svg)
 
+![CI Status](https://github.com/2024-devops-alt-dist/microSaas-ab/actions/workflows/ci.yml/badge.svg)
+
 **L’aventure commence sur la route… et finit dans l’assiette !**
 
 ## 🧭 Présentation du service

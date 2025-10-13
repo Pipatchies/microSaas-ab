@@ -1,3 +1,9 @@
+"""
+URL configuration for the TastyRoad Django project.
+
+Defines admin and core application routes.
+"""
+
 from django.contrib import admin
 from django.urls import path, include
 

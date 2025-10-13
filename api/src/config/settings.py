@@ -1,6 +1,16 @@
+# pylint: disable=invalid-name
+"""
+Django settings for the TastyRoad project.
+
+Includes environment variable loading, app definitions, middleware,
+database configuration, and static files settings.
+"""
+
+import sys
 from pathlib import Path
-import environ
 import os
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -129,3 +139,11 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+if "pytest" in sys.modules:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "test_db.sqlite3",
+        }
+    }

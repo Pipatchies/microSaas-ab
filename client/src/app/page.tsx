@@ -1,13 +1,16 @@
-import { ApiTestButton } from "@/components/api-test-button"
+import { ApiTestButton } from "@/components/api-test-button";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background p-8">
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">Test de Connexion API</h1>
+          <h1 className="text-4xl font-bold text-foreground">
+            Test de Connexion API
+          </h1>
           <p className="text-muted-foreground">
-            Testez la connexion à votre API et vérifiez l&apos;état de la base de données.
+            Testez la connexion à votre API et vérifiez l&apos;état de la base
+            de données.
           </p>
         </div>
 
@@ -31,5 +34,5 @@ export default function HomePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
