@@ -22,6 +22,14 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -41,6 +49,10 @@ jobs:
           pip install pytest pytest-django
           pytest --maxfail=1 --disable-warnings -q
 
+      - name: Notify failure
+        if: failure()
+        run: echo "🚨 Build failed on ${{ github.ref_name }} — check logs in Actions tab."
+
   # ⚛️ Frontend (Next.js)
   frontend:
     name: Frontend - Next.js
@@ -51,6 +63,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -79,6 +99,11 @@ jobs:
 
       - name: Build Next.js
         run: pnpm build
+
+      - name: Notify failure
+        if: failure()
+        run: echo "🚨 Build failed on ${{ github.ref_name }} — check logs in Actions tab."
+
 
   # 🐳 Docker build validation
   docker:
