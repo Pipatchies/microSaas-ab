@@ -15,10 +15,15 @@ pre-commit:
       run: pnpm prettier --check .
     backend-lint:
       root: "api/src"
-      run: pylint .
+      run: |
+        if [ -f "./env/Scripts/python.exe" ]; then
+          ./env/Scripts/python.exe -m pylint .
+        else
+          python -m pylint .
+        fi
     backend-format:
       root: "api/src"
-      run: black --check .
+      run: python -m black --check .
 
 commit-msg:
   commands:
@@ -26,10 +31,16 @@ commit-msg:
       run: npx commitlint --edit "$1"
 
 pre-push:
+  parallel: true
   commands:
     audit-frontend:
       root: "client"
       run: pnpm audit
     audit-backend:
       root: "api/src"
-      run: pip install safety && safety check
+      run: |
+        if [ -f "./env/Scripts/python.exe" ]; then
+          ./env/Scripts/python.exe -m safety check
+        else
+          python -m safety scan
+        fi

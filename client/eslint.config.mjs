@@ -1,6 +1,7 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
+import pluginPrettier from "eslint-plugin-prettier";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,13 +17,7 @@ const eslintConfig = [
       prettier: pluginPrettier,
     },
     rules: {
-      "prettier/prettier": ["error", {
-        semi: true,
-        singleQuote: false,
-        trailingComma: "es5",
-        tabWidth: 2,
-        printWidth: 100,
-      }],
+      "prettier/prettier": "warn",
     },
   },
 

@@ -1,5 +1,7 @@
 # TastyRoad 🛣️🍽️
 
+![CI](https://github.com/Pipatchies/microSaas-ab/actions/workflows/ci.yml/badge.svg)
+
 **L’aventure commence sur la route… et finit dans l’assiette !**
 
 ## 🧭 Présentation du service

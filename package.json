@@ -1,8 +1,12 @@
 {
+	"scripts": {
+	"prepare": "lefthook install"
+},
 	"devDependencies": {
-		"@commitlint/config-conventional": "^20.0.0",
 		"@commitlint/cli": "^20.1.0",
-		"husky": "^9.1.7"
+		"@commitlint/config-conventional": "^20.0.0",
+		"husky": "^9.1.7",
+		"lefthook": "^1.13.6"
 	},
-	"packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+	"packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af"
 }
