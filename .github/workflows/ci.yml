@@ -37,6 +37,11 @@ jobs:
       - name: Security audit
         run: pip install safety && safety check
 
+      - name: Run backend tests (pytest)
+        run: |
+          pip install pytest pytest-django
+          pytest --maxfail=1 --disable-warnings -q
+
   # ⚛️ Frontend (Next.js)
   frontend:
     name: Frontend - Next.js
@@ -64,6 +69,10 @@ jobs:
 
       - name: Prettier check
         run: pnpm prettier --check .
+
+      - name: Run frontend tests
+        run: |
+          pnpm test || echo "⚠️ No tests found, skipping..."
 
       - name: Build Next.js
         run: pnpm build

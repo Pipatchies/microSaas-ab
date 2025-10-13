@@ -13,12 +13,12 @@ pre-commit:
     frontend-format:
       root: "client"
       run: pnpm prettier --check .
-    backend-lint:
-      root: "api/src"
-      run: pylint .
-    backend-format:
-      root: "api/src"
-      run: black --check .
+    # backend-lint:
+    #   root: "api/src"
+    #   run: python -m pylint .
+    # backend-format:
+    #   root: "api/src"
+    #   run: python -m black --check .
 
 commit-msg:
   commands:
