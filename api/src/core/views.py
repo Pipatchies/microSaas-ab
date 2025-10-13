@@ -1,3 +1,5 @@
+# pylint: disable=broad-exception-caught
+
 """
 Core views for health check and database test endpoints.
 """
