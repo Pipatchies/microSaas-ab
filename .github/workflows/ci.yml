@@ -60,9 +60,8 @@ jobs:
           cache: pnpm
 
       - name: Install pnpm
-        run: |
-          npm install -g pnpm
-          pnpm --version
+        steps:
+      - uses: pnpm/action-setup@v4
 
       - name: Install dependencies
         run: pnpm install
