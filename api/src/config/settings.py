@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 """
 Django settings for the TastyRoad project.
 
@@ -5,9 +6,9 @@ Includes environment variable loading, app definitions, middleware,
 database configuration, and static files settings.
 """
 
+import sys
 from pathlib import Path
 import os
-import sys
 import environ
 
 
@@ -139,7 +140,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-if "test" in sys.argv:
+if "pytest" in sys.modules:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
