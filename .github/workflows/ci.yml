@@ -60,7 +60,6 @@ jobs:
           cache: pnpm
 
       - name: Install pnpm
-        steps:
       - uses: pnpm/action-setup@v4
 
       - name: Install dependencies
