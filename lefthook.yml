@@ -1,0 +1,35 @@
+# EXAMPLE USAGE:
+#
+#   Refer for explanation to following link:
+#   https://lefthook.dev/configuration/
+#
+
+pre-commit:
+  parallel: true
+  commands:
+    frontend-lint:
+      root: "client"
+      run: pnpm lint
+    frontend-format:
+      root: "client"
+      run: pnpm prettier --check .
+    backend-lint:
+      root: "api/src"
+      run: pylint .
+    backend-format:
+      root: "api/src"
+      run: black --check .
+
+commit-msg:
+  commands:
+    lint-commit:
+      run: npx commitlint --edit "$1"
+
+pre-push:
+  commands:
+    audit-frontend:
+      root: "client"
+      run: pnpm audit
+    audit-backend:
+      root: "api/src"
+      run: pip install safety && safety check
