@@ -1,5 +1,4 @@
 # TastyRoad 🛣️🍽️
-![Build Status](https://github.com/<ton-user>/tastyroad/actions/workflows/ci.yml/badge.svg)
 
 ![CI Status](https://github.com/2024-devops-alt-dist/microSaas-ab/actions/workflows/ci.yml/badge.svg)
 
@@ -85,7 +84,7 @@ TastyRoad répond à ce besoin croissant d’expériences intégrées : **un tra
 | 🗃️ Base de données | **PostgreSQL 16** |
 | 🧰 CI/CD | **GitHub Actions** |
 | 🐳 Conteneurisation | **Docker Compose v2** |
-| 🔐 Authentification | **Convex Auth** |
+| 🔐 Authentification | **A suivre** |
 | 🧪 Tests & Qualité | **Pylint**, **Black**, **Pytest**, **ESLint**, **Prettier**, **Vitest**, **Safety** |
 
 ---
@@ -109,6 +108,7 @@ docker compose up --build
 ```
 
 API → http://localhost:8000
+
 Frontend → http://localhost:3000
 
 ---
@@ -226,6 +226,7 @@ docker exec -it tastyroad_api
 ## 👩‍💻 Auteur
 
 **Ariane Bertaud**
+
 Conceptrice Développeuse d’Applications – Promotion 2025
 
 ---
