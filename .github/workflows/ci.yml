@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: api/src
+        working-directory: api
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -58,6 +58,9 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+
+      - name: Enable Corepack (to use pnpm)
+        run: corepack enable
 
       - name: Install dependencies
         run: |
