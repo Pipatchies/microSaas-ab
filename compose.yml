@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5432:5432"
+      - "5462:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database:/docker-entrypoint-initdb.d/
@@ -20,7 +20,7 @@ services:
     container_name: tastyroad_api
     restart: always
     ports:
-      - 8000:8000
+      - 8800:8800
     env_file:
       - .env
     volumes:
@@ -35,7 +35,7 @@ services:
     container_name: tastyroad_frontend
     restart: always
     ports:
-      - "3000:3000"
+      - "3300:3300"
     env_file:
       - ./client/.env
     volumes:

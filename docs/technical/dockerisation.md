@@ -5,8 +5,8 @@ Faciliter le déploiement et garantir un environnement identique entre développ
 
 ## Structure des services
 - **postgres** : base de données principale
-- **api** : backend Django exposé sur le port 8000
-- **frontend** : application Next.js exposée sur le port 3000
+- **api** : backend Django exposé sur le port 8800
+- **frontend** : application Next.js exposée sur le port 3300
 
 ## Commandes principales
 ```bash
@@ -16,8 +16,6 @@ docker compose up --build
 # Arrêter et nettoyer
 docker compose down -v
 
-# Accéder au shell du backend
-docker exec -it tastyroad_api bash
 ```
 
 ## Fichiers Docker
