@@ -89,33 +89,29 @@ TastyRoad répond à ce besoin croissant d’expériences intégrées : **un tra
 
 ---
 
-## 🧰 Environnement de développement
+## 🚀 Installation et exécution du projet
 
 ### ⚙️ Prérequis
+
+Avant de lancer le projet, assurez-vous d'avoir installé :
+
 - **Docker Desktop**
 - **Node.js 20.x** et **Python 3.11**
 - **PNPM** (pour le frontend)
 - **Git**
 
-### 🔧 Installation rapide
-```bash
-# Cloner le projet
-git clone https://github.com/ton-compte/tastyroad.git
-cd tastyroad
+### 🔧 Installation rapide avec Docker (recommandé)
 
-# Lancer toute la stack
-docker compose up --build
+*1. Cloner le projet*
+
+```bash
+git clone https://github.com/ton-compte/tastyroad.git
+cd microSaas-ab
 ```
 
-API → http://localhost:8000
+*2. Ajout des fichiers .env*
 
-Frontend → http://localhost:3000
-
----
-
-## 🧩 Variables d’environnement
-
-Fichier .env à la racine :
+- A la racine du projet avec les variables suivantes :
 
 ```bash
 DEBUG=True
@@ -127,8 +123,67 @@ DB_USER=<your_db_user>
 DB_PASSWORD=<your_db_password>
 DB_HOST=postgres
 DB_PORT=5432
-NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_API_URL=http://localhost:8800
 ```
+
+- Dans le dossier `client` avec la variable suivante :
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8800
+```
+
+*3. Lancer tout le projet*
+
+```bash
+docker compose up --build
+```
+
+*4. Stopper les conteneurs*
+
+```bash
+docker compose down
+```
+
+Le projet est accessible aux urls suivants :
+
+API → http://localhost:8800
+
+Frontend → http://localhost:3300
+
+### Installation manuelle (Pour lancer le projet en local sans Docker)
+
+*1. Cloner le projet* (Même commande que pour Docker)
+
+*2. Ajout des fichiers .env* (Même commande que pour Docker)
+
+
+*3. Installation du backend*
+
+```bash
+cd api
+python -m venv env
+source env/bin/activate      # (sous Windows: env\Scripts\activate)
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+Appliquer les migrations :
+```bash
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver 8800
+```
+
+🔗 Backend : http://localhost:8800
+
+*4. Installation du frontend*
+
+```bash
+cd client
+pnpm install
+pnpm run dev
+```
+
+💻 Frontend : http://localhost:3300
 
 ---
 
@@ -153,6 +208,50 @@ pnpm build
 
 ---
 
+## 🧩 Variables d’environnement
+
+Fichier .env à la racine :
+
+```bash
+DEBUG=True
+SECRET_KEY=<your_secret_key_here>
+ALLOWED_HOSTS=localhost,127.0.0.1
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=<your_database_name>
+DB_USER=<your_db_user>
+DB_PASSWORD=<your_db_password>
+DB_HOST=postgres
+DB_PORT=5480
+NEXT_PUBLIC_API_URL=http://localhost:8800
+```
+
+Fichier .env dans le dossier `client` :
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8800
+``` 
+
+---
+
+## 🐳 Dockerisation
+
+📘 [Voir la documentation Docker complète](docs/technical/dockerisation.md)
+
+Commandes principales :
+```bash
+docker compose up --build
+docker compose down
+docker compose down -v # Pour supprimer les données
+```
+
+Commandes annexes mais utiles :
+```bash
+docker compose logs -f # Voir les logs des conteneurs
+docker compose logs -f api # Voir les logs du backend
+docker compose logs -f client # Voir les logs du frontend
+```
+---
+
 ## ⚙️ CI/CD Pipeline
 
 📘 [Voir la documentation complète sur la CI/CD](docs/technical/ci-cd.md)
@@ -169,22 +268,7 @@ pnpm build
 
     - Docker : validation des images
 
-- Cache des dépendances (pip et pnpm)
-
-- Notifications Discord (optionnelles)
-
----
-
-## 🐳 Dockerisation
-
-📘 [Voir la documentation Docker complète](docs/technical/dockerisation.md)
-
-Commandes principales :
-```bash
-docker compose up --build
-docker compose down -v
-docker exec -it tastyroad_api 
-```
+    - Cache des dépendances (pip et pnpm)
 
 ---
 
@@ -201,6 +285,38 @@ docker exec -it tastyroad_api
 - Lefthook (pré-commit hooks)
 
 - Node 20 / Python 3.11
+
+---
+
+## 🛠️ Depannage
+
+### Si les ports sont déjà utilisés
+
+Vérifier que les ports sont libres :
+
+```bash
+netstat -an | findstr :8800 # API
+netstat -an | findstr :3300 # Frontend
+netstat -an | findstr :5462 # Postgres
+```
+
+Si les ports sont déjà utilisés, changer le port dans le fichier `compose.yml` et dans le fichier `.env`.
+
+### S'il y a un problème de connexion à la base de données
+
+- Vérifier que le port 5462 est ouvert sur le serveur.
+
+- Si le port est ouvert, vérifier que le nom de la base de données et les informations de connexion sont correctes dans le fichier `.env`.
+
+- Si le port est fermé, ouvrir le port sur le serveur.
+
+### S'il y a un problème de connexion au serveur API
+
+Vérifier que le port 8800 est ouvert sur le serveur.
+
+Si le port est ouvert, vérifier que le nom de l'hôte et le port de l'API sont corrects dans le fichier `.env`.
+
+Si le port est fermé, ouvrir le port sur le serveur.
 
 ---
 
