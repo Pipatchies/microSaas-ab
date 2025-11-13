@@ -196,16 +196,24 @@ Commandes principales :
 ```bash
 # Backend
 pylint src
-black --check .
+black --check . ou black . #pour checker et reformater
 pytest
 safety check
 
 # Frontend
 pnpm lint
-pnpm prettier --check .
+pnpm prettier --check . ou pnpm format #pour checker et reformater
 pnpm test
 pnpm build
 ```
+Le projet utilise Lefthook pour exécuter automatiquement des vérifications avant chaque commit ou push.
+Pour activer les hooks, lancer la commande suivante à la racine du projet :
+
+```
+pnpm i
+```
+
+Lefthook et Commitlint s’exécuteront ensuite automatiquement à chaque commit / push.
 
 ---
 

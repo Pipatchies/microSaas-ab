@@ -34,5 +34,4 @@ Assurer la qualité du code et la stabilité du projet avant chaque fusion ou d�
 ## Notifications
 En cas d’échec :
 - message de log dans Actions
-- (optionnel) webhook Discord
 
