@@ -6,15 +6,22 @@ import { stepService } from "./services/stepService";
 
 export default function ItinerariesPage() {
   useEffect(() => {
-    itineraryService.getAll().then((data) => {
-      console.log("Itinéraires :", data);
-    });
-  }, []);
+    async function fetchData() {
+      const itineraries = await itineraryService.getAll();
+      console.log("Itineraries:", itineraries);
 
-  useEffect(() => {
-    stepService.getByItinerary(1).then((steps) => {
-      console.log("Steps de l'itinéraire 1 :", steps);
-    });
+      if (itineraries.length > 0) {
+        const steps = await stepService.getByItinerary(
+          itineraries[0].id_itinerary,
+        );
+        console.log(
+          `Steps for Itinerary ${itineraries[0].id_itinerary}:`,
+          steps,
+        );
+      }
+    }
+
+    fetchData();
   }, []);
 
   return <div>Itineraries Page</div>;
