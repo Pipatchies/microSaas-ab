@@ -76,16 +76,16 @@ export default function ItineraryForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md border border-gray-100"
+        className="space-y-6 w-full max-w-2xl mx-auto p-4 md:p-6 bg-transparent md:bg-white md:rounded-xl md:shadow-md md:border md:border-gray-100"
       >
         <Typography
           variant="h2"
-          className="text-2xl font-heading text-primary mb-6"
+          className="text-2xl font-heading text-primary mb-2 md:mb-6"
         >
           Ajouter un itinéraire
         </Typography>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2">
           {/* Title */}
           <FormField
             control={form.control}
@@ -94,7 +94,11 @@ export default function ItineraryForm() {
               <FormItem>
                 <FormLabel>Titre</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Saveurs d'Occitanie" {...field} />
+                  <Input
+                    placeholder="Ex: Saveurs d'Occitanie"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -113,7 +117,7 @@ export default function ItineraryForm() {
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="text-base">
                       <SelectValue placeholder="Sélectionner..." />
                     </SelectTrigger>
                   </FormControl>
@@ -136,7 +140,11 @@ export default function ItineraryForm() {
               <FormItem>
                 <FormLabel>Zone</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Occitanie" {...field} />
+                  <Input
+                    placeholder="Ex: Occitanie"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -151,7 +159,12 @@ export default function ItineraryForm() {
               <FormItem>
                 <FormLabel>Distance (km)</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="45" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="45"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -166,7 +179,11 @@ export default function ItineraryForm() {
               <FormItem>
                 <FormLabel>Régime</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Viande, Végétarien" {...field} />
+                  <Input
+                    placeholder="Ex: Viande, Végétarien"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -181,7 +198,11 @@ export default function ItineraryForm() {
               <FormItem>
                 <FormLabel>Spécialité</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ex: Cassoulet" {...field} />
+                  <Input
+                    placeholder="Ex: Cassoulet"
+                    {...field}
+                    className="text-base"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -199,7 +220,7 @@ export default function ItineraryForm() {
               <FormControl>
                 <Textarea
                   placeholder="Petite anecdote..."
-                  className="resize-none"
+                  className="resize-none text-base min-h-[100px]"
                   {...field}
                 />
               </FormControl>
@@ -210,7 +231,7 @@ export default function ItineraryForm() {
 
         <Button
           type="submit"
-          className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-transform transform hover:scale-[1.02] active:scale-[0.98]"
+          className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold py-3.5 px-6 rounded-full shadow-lg transition-transform transform hover:scale-[1.02] active:scale-[0.98] mt-4"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Création..." : "Créer l'itinéraire"}
