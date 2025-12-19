@@ -1,5 +1,5 @@
 export type Itinerary = {
-  id_itinerary: number;
+  id_itinerary?: number;
   title: string;
   type: string;
   zone: string;
@@ -10,7 +10,7 @@ export type Itinerary = {
 };
 
 export type Step = {
-  id_step: number;
+  id_step?: number;
   itinerary_id: number;
   name: string;
   description: string;
