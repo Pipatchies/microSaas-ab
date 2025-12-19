@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Nanum_Myeongjo, Rubik, Libre_Franklin } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
 const nanumMyeongjo = Nanum_Myeongjo({
   weight: ["400", "700", "800"],
@@ -25,6 +27,8 @@ export const metadata: Metadata = {
   description: "Application mobile de partage d'itinéraires gourmands",
 };
 
+import { Toaster } from "@/components/ui/sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,7 +39,10 @@ export default function RootLayout({
       <body
         className={`${nanumMyeongjo.variable} ${rubik.variable} ${libreFranklin.variable} antialiased`}
       >
-        {children}
+        <Header />
+        <main className="pb-24 pt-16 min-h-screen">{children}</main>
+        <Toaster />
+        <Footer />
       </body>
     </html>
   );
