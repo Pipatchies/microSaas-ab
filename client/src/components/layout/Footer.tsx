@@ -7,46 +7,53 @@ import { usePathname } from "next/navigation";
 export function Footer() {
   const pathname = usePathname();
 
-  const isActive = (path: string) => {
-    // Exact match for home, startsWith for others to handle subpaths if needed (though usually nav links are exact)
-    if (path === "/" && pathname !== "/")
-      return "text-white/60 hover:text-white";
-    if (path !== "/" && pathname.startsWith(path)) return "text-secondary";
-    return pathname === path
-      ? "text-secondary"
-      : "text-white/60 hover:text-white";
+  const checkActive = (path: string) => {
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
   };
+
+  const getLinkClass = (path: string) =>
+    checkActive(path) ? "text-secondary" : "text-white hover:text-white";
+
+  const getIconClass = (path: string) =>
+    `h-6 w-6 transition-colors group-hover:fill-white ${
+      checkActive(path) ? "fill-white" : ""
+    }`;
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 z-50 bg-[#062D2A] px-6 py-4 pb-safe transition-all duration-300 shadow-t-lg">
       <nav className="flex items-center justify-between max-w-md mx-auto">
         <Link
           href="/"
-          className={`flex flex-col items-center gap-1 transition-colors ${isActive("/")}`}
+          className={`group flex flex-col items-center gap-1 transition-colors ${getLinkClass(
+            "/",
+          )}`}
         >
-          <Home className="h-6 w-6" />
-          <span className="text-[10px] font-medium">Accueil</span>
+          <Home className={getIconClass("/")} />
         </Link>
         <Link
           href="/community"
-          className={`flex flex-col items-center gap-1 transition-colors ${isActive("/community")}`}
+          className={`group flex flex-col items-center gap-1 transition-colors ${getLinkClass(
+            "/community",
+          )}`}
         >
-          <Users className="h-6 w-6" />
-          <span className="text-[10px] font-medium">Groupes</span>
+          <Users className={getIconClass("/community")} />
         </Link>
         <Link
           href="/favorites"
-          className={`flex flex-col items-center gap-1 transition-colors ${isActive("/favorites")}`}
+          className={`group flex flex-col items-center gap-1 transition-colors ${getLinkClass(
+            "/favorites",
+          )}`}
         >
-          <Heart className="h-6 w-6" />
-          <span className="text-[10px] font-medium">Favoris</span>
+          <Heart className={getIconClass("/favorites")} />
         </Link>
         <Link
           href="/profile"
-          className={`flex flex-col items-center gap-1 transition-colors ${isActive("/profile")}`}
+          className={`group flex flex-col items-center gap-1 transition-colors ${getLinkClass(
+            "/profile",
+          )}`}
         >
-          <User className="h-6 w-6" />
-          <span className="text-[10px] font-medium">Profil</span>
+          <User className={getIconClass("/profile")} />
         </Link>
       </nav>
     </footer>
