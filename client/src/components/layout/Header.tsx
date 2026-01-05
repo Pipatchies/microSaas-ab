@@ -2,16 +2,13 @@
 
 import React from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/typography";
 
 export function Header() {
   const router = useRouter();
   const pathname = usePathname();
-
-  // Don't show header on login/register pages if needed,
-  // or customize based on path. For now, we show everywhere.
 
   const showBackButton = pathname !== "/";
 
@@ -34,21 +31,16 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-0 text-white hover:text-white/80"
+            className="absolute left-8 -translate-y-1/2 bg-accent border-2 border-secondary text-primary rounded-full hover:bg-accent/90 transition-colors"
             onClick={() => router.back()}
           >
-            <ChevronLeft className="h-6 w-6" />
+            <ArrowLeft className="h-6 w-6 color-primary" />
             <span className="sr-only">Retour</span>
           </Button>
         )}
 
         {/* Center: Title */}
         <Typography variant="h1">{getPageTitle(pathname)}</Typography>
-
-        {/* Right: Actions (Placeholder) */}
-        <div className="absolute right-0 w-10">
-          {/* Future: Add search or profile icon here */}
-        </div>
       </div>
     </header>
   );
