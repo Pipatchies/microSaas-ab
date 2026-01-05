@@ -40,7 +40,7 @@ export default function RootLayout({
         className={`${nanumMyeongjo.variable} ${rubik.variable} ${libreFranklin.variable} antialiased`}
       >
         <Header />
-        <main className="pb-24 pt-16 min-h-screen">{children}</main>
+        <main className="pb-24 pt-30 min-h-screen">{children}</main>
         <Toaster />
         <Footer />
       </body>

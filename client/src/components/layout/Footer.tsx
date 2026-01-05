@@ -21,7 +21,7 @@ export function Footer() {
     }`;
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-50 bg-[#062D2A] px-6 py-4 pb-safe transition-all duration-300 shadow-t-lg">
+    <footer className="fixed bottom-0 left-0 right-0 z-50 bg-primary px-6 py-4 pb-safe transition-all duration-300 shadow-t-lg">
       <nav className="flex items-center justify-between max-w-md mx-auto">
         <Link
           href="/"
