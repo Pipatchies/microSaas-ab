@@ -36,7 +36,7 @@ services:
     container_name: tastyroad_frontend
     restart: always
     ports:
-      - "3300:3300"
+      - "3300:3000"
     env_file:
       - ./client/.env
     volumes:
@@ -48,9 +48,8 @@ services:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
-      - PORT=3300
+      - PORT=3000
       - HOSTNAME=0.0.0.0
-
 
 volumes:
   postgres_data:
