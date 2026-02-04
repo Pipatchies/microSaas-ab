@@ -20,7 +20,7 @@ services:
     container_name: tastyroad_api
     restart: always
     ports:
-      - 8800:8800
+      - "${API_PORT}:8800"
     env_file:
       - .env
     volumes:
@@ -36,7 +36,7 @@ services:
     container_name: tastyroad_frontend
     restart: always
     ports:
-      - "3300:3000"
+      - "${CLIENT_PORT}:3000"
     env_file:
       - ./client/.env
     volumes:
