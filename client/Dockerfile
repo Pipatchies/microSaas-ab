@@ -25,39 +25,39 @@ EXPOSE 3000
 
 CMD ["pnpm", "run", "dev"]
 
-# --- 3. Build step ---
-FROM base AS builder
+# # --- 3. Build step ---
+# FROM base AS builder
 
-RUN apk add --no-cache libc6-compat git bash
+# RUN apk add --no-cache libc6-compat git bash
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+# COPY --from=deps /app/node_modules ./node_modules
+# COPY . .
 
-ENV NEXT_TELEMETRY_DISABLED=1
+# ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN corepack enable pnpm && pnpm run build
+# RUN corepack enable pnpm && pnpm run build
 
-# --- 4. Run/Production step ---
-FROM base AS runner
-WORKDIR /app
+# # --- 4. Run/Production step ---
+# FROM base AS runner
+# WORKDIR /app
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+# ENV NODE_ENV=production
+# ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# RUN addgroup --system --gid 1001 nodejs
+# RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# COPY --from=builder /app/public ./public
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-USER nextjs
+# USER nextjs
 
-EXPOSE 3000
+# EXPOSE 3000
 
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
+# ENV PORT=3000
+# ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+# CMD ["node", "server.js"]
