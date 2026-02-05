@@ -21,7 +21,7 @@ WORKDIR /app
 COPY . .
 
 ENV NODE_ENV=development
-EXPOSE 3000
+EXPOSE 3300
 
 CMD ["pnpm", "run", "dev"]
 
@@ -55,7 +55,7 @@ CMD ["pnpm", "run", "dev"]
 
 # USER nextjs
 
-# EXPOSE 3000
+# EXPOSE 3300
 
 # ENV PORT=3000
 # ENV HOSTNAME="0.0.0.0"
