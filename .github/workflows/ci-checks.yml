@@ -2,12 +2,11 @@ name: 🛡️ CI Checks
 
 on:
   push:
-    branches: [develop, 'feature/*'] # Run on develop and feature branches
+    branches: [develop, "feature/*"]
   pull_request:
-    types: [opened, synchronize, reopened] # Run on all PRs
+    types: [opened, synchronize, reopened]
 
 jobs:
-  # 🧩 Backend (Django) Checks
   backend-checks:
     name: Backend - Test & Lint
     runs-on: ubuntu-latest
@@ -22,7 +21,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: 'pip'
+          cache: "pip"
 
       - name: Install dependencies
         run: |
@@ -31,7 +30,7 @@ jobs:
           pip install safety pytest pytest-django pylint black
 
       - name: Security audit (safety)
-        run: safety check
+        run: safety scan
 
       - name: Lint (pylint)
         run: pylint .
@@ -60,7 +59,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
