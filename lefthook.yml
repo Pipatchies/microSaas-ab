@@ -17,6 +17,15 @@ pre-commit:
       run: pnpm --filter tastyroad exec eslint --fix {staged_files}
       stage_fixed: true
 
+    backend-format:
+      glob: "api/**/*.py"
+      run: black {staged_files}
+      stage_fixed: true
+
+    backend-lint:
+      glob: "api/**/*.py"
+      run: pylint {staged_files}
+
 commit-msg:
   commands:
     lint-commit:
