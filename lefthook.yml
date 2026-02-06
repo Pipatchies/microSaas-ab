@@ -8,23 +8,28 @@ pre-commit:
   parallel: true
   commands:
     frontend-format:
-      glob: "client/**/*.{js,ts,jsx,tsx,json,css,md}"
-      run: pnpm --filter tastyroad exec prettier --write {staged_files}
+      root: "client"
+      glob: "**/*.{js,ts,jsx,tsx,json,css,md}"
+      run: pnpm prettier --write {staged_files}
       stage_fixed: true
 
     frontend-lint:
-      glob: "client/**/*.{js,ts,jsx,tsx}"
-      run: pnpm --filter tastyroad exec eslint --fix {staged_files}
+      root: "client"
+      glob: "**/*.{js,ts,jsx,tsx}"
+      run: pnpm eslint --fix {staged_files}
       stage_fixed: true
 
     backend-format:
-      glob: "api/**/*.py"
+      root: "api"
+      glob: "**/*.py"
       run: black {staged_files}
       stage_fixed: true
 
-    backend-lint:
-      glob: "api/**/*.py"
+    backend-lint: 
+      root: "api"
+      glob: "**/*.py"
       run: pylint {staged_files}
+      stage_fixed: true
 
 commit-msg:
   commands:
