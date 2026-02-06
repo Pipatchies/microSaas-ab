@@ -7,23 +7,28 @@
 pre-commit:
   parallel: true
   commands:
-    frontend-lint:
-      root: "client"
-      run: pnpm lint
     frontend-format:
       root: "client"
-      run: pnpm prettier --check .
-    # backend-lint:
-    #   root: "api/src"
-    #   run: |
-    #     if [ -f "./env/Scripts/python.exe" ]; then
-    #       ./env/Scripts/python.exe -m pylint .
-    #     else
-    #       python -m pylint .
-    #     fi
-    # backend-format:
-    #   root: "api/src"
-    #   run: python -m black --check .
+      glob: "**/*.{js,ts,jsx,tsx,json,css,md}"
+      run: pnpm prettier --write {staged_files}
+      stage_fixed: true
+
+    frontend-lint:
+      root: "client"
+      glob: "**/*.{js,ts,jsx,tsx}"
+      run: pnpm eslint --fix {staged_files}
+      stage_fixed: true
+
+    backend-format:
+      root: "api"
+      glob: "**/*.py"
+      run: black {staged_files}
+      stage_fixed: true
+
+    backend-check:
+      root: "api"
+      glob: "**/*.py"
+      run: docker-compose exec -T api python manage.py check
 
 commit-msg:
   commands:
@@ -33,14 +38,11 @@ commit-msg:
 pre-push:
   parallel: true
   commands:
+    # Pour l'audit, on garde la vérification globale car c'est rapide et important de tout checker avant push
     audit-frontend:
       root: "client"
       run: pnpm audit
+
     audit-backend:
-      root: "api/src"
-      run: |
-        if [ -f "./env/Scripts/python.exe" ]; then
-          ./env/Scripts/python.exe -m safety check
-        else
-          python -m safety scan
-        fi
+      root: "api"
+      run: docker-compose exec -T api pip-audit

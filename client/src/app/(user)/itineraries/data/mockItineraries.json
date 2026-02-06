@@ -1,0 +1,32 @@
+[
+  {
+    "id_itinerary": 1,
+    "title": "Boucle du Cassoulet – Castelnaudary",
+    "type": "Randonnée",
+    "zone": "Occitanie – Lauragais",
+    "distance": 7.8,
+    "diet": "Omnivore",
+    "speciality": "Cassoulet traditionnel",
+    "facts": "Une boucle douce autour du canal du Midi et des collines du Lauragais, berceau du cassoulet."
+  },
+  {
+    "id_itinerary": 2,
+    "title": "Tour des Vignes de Saint-Émilion",
+    "type": "Cyclo",
+    "zone": "Nouvelle-Aquitaine – Gironde",
+    "distance": 27.8,
+    "diet": "Omnivore",
+    "speciality": "Vins & cannelés bordelais",
+    "facts": "Parcours vallonné à travers les vignobles classés UNESCO."
+  },
+  {
+    "id_itinerary": 3,
+    "title": "Route des Crêtes – Vosges",
+    "type": "Moto",
+    "zone": "Grand Est – Vosges",
+    "distance": 53.4,
+    "diet": "Omnivore",
+    "speciality": "Munster fermier",
+    "facts": "Un des plus beaux itinéraires moto de France, paysages alpins."
+  }
+]
