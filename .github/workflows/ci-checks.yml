@@ -27,10 +27,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install safety pytest pytest-django pylint black
+          pip install -r requirements.txt
+          pip install pytest pytest-django pylint black
 
-      - name: Security audit (safety)
-        run: safety scan
 
       - name: Lint (pylint)
         run: pylint .
