@@ -25,6 +25,11 @@ pre-commit:
       run: black {staged_files}
       stage_fixed: true
 
+    backend-check:
+      root: "api"
+      glob: "**/*.py"
+      run: docker-compose exec -T api python manage.py check
+
 commit-msg:
   commands:
     lint-commit:
