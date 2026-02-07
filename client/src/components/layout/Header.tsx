@@ -23,7 +23,7 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-start pt-12 h-40 bg-primary rounded-b-[60%] shadow-lg transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 flex items-start pt-12 h-32 bg-primary rounded-b-[60%] shadow-lg transition-all duration-300">
       {/* Left: Back Button */}
       {showBackButton && (
         <NavigationButton variant="back" className="absolute left-6 top-6" />
