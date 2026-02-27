@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Route, Clock, MapPin } from "lucide-react";
+import Typography from "@/components/typography";
 
 interface ItineraryBottomPanelProps {
   title: string;
@@ -64,17 +65,20 @@ export default function ItineraryBottomPanel({
     .padStart(2, "0")}`;
 
   return (
-    <section className="bg-accent rounded-t-3xl p-6 md:p-8 space-y-6 md:space-y-8 min-h-full">
+    <section className="bg-transparent p-5 md:p-8 space-y-5 md:space-y-8">
       {/* Title Input */}
       <div className="flex flex-col gap-2">
-        <label className="text-base md:text-sm font-medium text-primary block">
+        <Typography
+          variant="label"
+          className="text-xl font-medium text-foreground block"
+        >
           Titre de l'itinéraire
-        </label>
+        </Typography>
         <Input
           value={title}
           onChange={(e) => onTitleChange(e.target.value)}
           placeholder=""
-          className="text-lg font-medium border-secondary border-2 h-11 focus-visible:ring-secondary/50 bg-white"
+          className="text-lg text-foreground font-medium border-secondary border-2 h-11 focus-visible:ring-secondary/50 bg-white"
         />
       </div>
 
@@ -106,65 +110,80 @@ export default function ItineraryBottomPanel({
 
       {/* Additional Details Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-primary/10">
-        <div>
-          <label className="text-xs font-semibold text-gray-500 mb-1.5 block">
+        <div className="flex flex-col justify-end">
+          <Typography
+            variant="label"
+            className="text-sm font-semibold text-foreground mb-1.5 block"
+          >
             Moyen de transport
-          </label>
+          </Typography>
           <Select value={type} onValueChange={onTypeChange}>
-            <SelectTrigger className="w-full bg-white h-10 text-sm border-gray-200">
+            <SelectTrigger className="w-full bg-white h-10 text-sm border-secondary">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="border-secondary">
               <SelectItem value="Rando">Rando</SelectItem>
               <SelectItem value="Vélo">Vélo</SelectItem>
               <SelectItem value="Moto">Moto</SelectItem>
             </SelectContent>
           </Select>
         </div>
-        <div>
-          <label className="text-xs font-semibold text-gray-500 mb-1.5 block">
+        <div className="flex flex-col justify-end">
+          <Typography
+            variant="label"
+            className="text-sm font-semibold text-foreground mb-1.5 block"
+          >
             Zone
-          </label>
+          </Typography>
           <Input
             value={zone}
             onChange={(e) => onZoneChange(e.target.value)}
             placeholder="Ex: Occitanie"
-            className="h-10 text-sm bg-white border-gray-200"
+            className="h-10 text-sm bg-white border-secondary"
           />
         </div>
-        <div>
-          <label className="text-xs font-semibold text-gray-500 mb-1.5 block">
+        <div className="flex flex-col justify-end">
+          <Typography
+            variant="label"
+            className="text-sm font-semibold text-foreground mb-1.5 block"
+          >
             Régime
-          </label>
+          </Typography>
           <Input
             value={diet}
             onChange={(e) => onDietChange(e.target.value)}
             placeholder="Ex: Végétarien"
-            className="h-10 text-sm bg-white border-gray-200"
+            className="h-10 text-sm bg-white border-secondary"
           />
         </div>
-        <div>
-          <label className="text-xs font-semibold text-gray-500 mb-1.5 block">
+        <div className="flex flex-col justify-end">
+          <Typography
+            variant="label"
+            className="text-sm font-semibold text-foreground mb-1.5 block"
+          >
             Spécialité
-          </label>
+          </Typography>
           <Input
             value={speciality}
             onChange={(e) => onSpecialityChange(e.target.value)}
             placeholder="Ex: Cassoulet"
-            className="h-10 text-sm bg-white border-gray-200"
+            className="h-10 text-sm bg-white border-secondary"
           />
         </div>
       </div>
 
       <div>
-        <label className="text-xs font-medium text-gray-500 mb-1 block">
+        <Typography
+          variant="label"
+          className="text-sm font-semibold text-foreground mb-1.5 block"
+        >
           Anecdote (Faits)
-        </label>
+        </Typography>
         <Textarea
           value={facts}
           onChange={(e) => onFactsChange(e.target.value)}
           placeholder="Petite histoire..."
-          className="h-20 text-sm resize-none bg-white border-gray-200"
+          className="h-20 text-sm resize-none bg-white border-secondary"
         />
       </div>
 
