@@ -7,6 +7,10 @@ import { usePathname } from "next/navigation";
 export function Footer() {
   const pathname = usePathname();
 
+  if (pathname === "/itineraries/create") {
+    return null;
+  }
+
   const checkActive = (path: string) => {
     if (path === "/") return pathname === "/";
     return pathname.startsWith(path);

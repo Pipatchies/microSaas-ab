@@ -14,13 +14,22 @@ export function Header() {
   // Mapping paths to titles
   const getPageTitle = (path: string) => {
     if (path === "/") return "TastyRoad";
-    if (path.includes("/itineraries/create")) return "Nouveau Voyage";
     if (path.includes("/itineraries")) return "Itineraires";
     if (path.includes("/profile")) return "Mon Profil";
     if (path.includes("/community")) return "Communauté";
     if (path.includes("/favorites")) return "Favoris";
     return "TastyRoad";
   };
+
+  if (pathname === "/itineraries/create") {
+    return (
+      <header className="fixed top-0 left-0 right-0 z-50 p-6 pointer-events-none">
+        <div className="pointer-events-auto w-fit">
+          <NavigationButton variant="close" />
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex items-start pt-12 h-32 bg-primary rounded-b-[60%] shadow-lg transition-all duration-300">
