@@ -11,13 +11,11 @@ export default function ItinerariesPage() {
       console.log("Itineraries:", itineraries);
 
       if (itineraries.length > 0) {
-        const steps = await stepService.getByItinerary(
-          itineraries[0].id_itinerary,
-        );
-        console.log(
-          `Steps for Itinerary ${itineraries[0].id_itinerary}:`,
-          steps,
-        );
+        const itineraryId = itineraries[0].id_itinerary;
+        if (itineraryId !== undefined) {
+          const steps = await stepService.getByItinerary(itineraryId);
+          console.log(`Steps for Itinerary ${itineraryId}:`, steps);
+        }
       }
     }
 
