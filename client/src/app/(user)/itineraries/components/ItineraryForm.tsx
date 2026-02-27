@@ -1,242 +1,144 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { itineraryService } from "../services/itineraryService";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Typography from "@/components/typography";
-
-// Schema Definitions
-const itinerarySchema = z.object({
-  title: z.string().min(3, "Le titre doit contenir au moins 3 caractères"),
-  type: z.string().min(1, "Le type est requis"),
-  zone: z.string().min(1, "La zone est requise"),
-  distance: z.number().min(1, "La distance doit être supérieure à 0"),
-  diet: z.string().min(1, "Le régime alimentaire est requis"),
-  speciality: z.string().min(1, "La spécialité est requise"),
-  facts: z.string().optional(),
-});
-
-type ItineraryFormData = z.infer<typeof itinerarySchema>;
-
-const defaultValues = {
-  title: "",
-  type: "",
-  zone: "",
-  distance: 0,
-  diet: "",
-  speciality: "",
-  facts: "",
-};
+import { MapMouseEvent } from "react-map-gl/mapbox";
+import ItineraryMap from "@/app/(user)/itineraries/_sections/spaceMap";
+import ItineraryBottomPanel from "@/app/(user)/itineraries/_sections/spaceBottomPanel";
+import { getDirections } from "@/services/mapboxService";
+import { itineraryService } from "../services/itineraryService";
+import { MapboxRoute } from "@/services/mapboxService";
 
 export default function ItineraryForm() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const form = useForm<ItineraryFormData>({
-    resolver: zodResolver(itinerarySchema),
-    defaultValues,
-  });
+  // Form State
+  const [title, setTitle] = useState("");
+  const [type, setType] = useState("Rando");
+  const [zone, setZone] = useState("");
+  const [diet, setDiet] = useState("");
+  const [speciality, setSpeciality] = useState("");
+  const [facts, setFacts] = useState("");
 
-  const { isSubmitting } = form.formState;
+  // Map State
+  const [waypoints, setWaypoints] = useState<{ lng: number; lat: number }[]>(
+    [],
+  );
+  const [routeData, setRouteData] = useState<MapboxRoute | null>(null);
 
-  async function onSubmit(data: ItineraryFormData) {
+  const handleMapClick = async (e: MapMouseEvent) => {
+    const newPoint = { lng: e.lngLat.lng, lat: e.lngLat.lat };
+    const newWaypoints = [...waypoints, newPoint];
+    setWaypoints(newWaypoints);
+
+    // Calculate route if we have at least 2 points
+    if (newWaypoints.length >= 2) {
+      toast.loading("Calcul de l'itinéraire...");
+      try {
+        const result = await getDirections(type, newWaypoints);
+        if (result) {
+          setRouteData(result);
+          toast.dismiss();
+        } else {
+          toast.dismiss();
+          toast.error("Impossible de calculer l'itinéraire via la route.");
+        }
+      } catch (error) {
+        toast.dismiss();
+        console.error(error);
+        toast.error("Erreur lors du calcul de l'itinéraire.");
+      }
+    } else {
+      setRouteData(null);
+    }
+  };
+
+  const handleTypeChange = async (newType: string) => {
+    setType(newType);
+    if (waypoints.length >= 2) {
+      const result = await getDirections(newType, waypoints);
+      if (result) setRouteData(result);
+    }
+  };
+
+  const onSubmit = async () => {
+    setIsSubmitting(true);
     try {
-      await itineraryService.create(data);
-      toast.success("Itinéraire créé avec succès !"); // Notification Shadcn
+      if (!routeData) throw new Error("Aucun itinéraire tracé.");
+
+      await itineraryService.create({
+        title,
+        type,
+        zone: zone || "Non spécifiée",
+        diet: diet || "Tous",
+        speciality: speciality || "Aucune",
+        facts,
+        distance: routeData.distance,
+      });
+
+      toast.success("Itinéraire créé avec succès !");
       router.push("/itineraries");
       router.refresh();
     } catch (err) {
       console.error(err);
-      toast.error("Une erreur est survenue lors de la création."); // Notification Shadcn
+      toast.error("Une erreur est survenue lors de la création.");
+    } finally {
+      setIsSubmitting(false);
     }
-  }
+  };
+
+  // Prepare GeoJSON for map
+  const routeGeoJSON = routeData
+    ? {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "LineString",
+          coordinates: routeData.coordinates,
+        },
+      }
+    : null;
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 w-full max-w-2xl mx-auto p-4 md:p-6 bg-transparent md:bg-white md:rounded-xl md:shadow-md md:border md:border-gray-100"
-      >
-        <Typography
-          variant="h2"
-          className="text-2xl font-heading text-primary mb-2 md:mb-6"
-        >
-          Ajouter un itinéraire
-        </Typography>
-
-        <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2">
-          {/* Title */}
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Titre</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Ex: Saveurs d'Occitanie"
-                    {...field}
-                    className="text-base"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Type */}
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Type</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="text-base">
-                      <SelectValue placeholder="Sélectionner..." />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Vélo">Vélo</SelectItem>
-                    <SelectItem value="Moto">Moto</SelectItem>
-                    <SelectItem value="Rando">Rando</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Zone */}
-          <FormField
-            control={form.control}
-            name="zone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Zone</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Ex: Occitanie"
-                    {...field}
-                    className="text-base"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Distance */}
-          <FormField
-            control={form.control}
-            name="distance"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Distance (km)</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="45"
-                    {...field}
-                    className="text-base"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Diet */}
-          <FormField
-            control={form.control}
-            name="diet"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Régime</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Ex: Viande, Végétarien"
-                    {...field}
-                    className="text-base"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Speciality */}
-          <FormField
-            control={form.control}
-            name="speciality"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Spécialité</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Ex: Cassoulet"
-                    {...field}
-                    className="text-base"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* Facts */}
-        <FormField
-          control={form.control}
-          name="facts"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Faits intéressants</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Petite anecdote..."
-                  className="resize-none text-base min-h-[100px]"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+    <div className="relative w-full flex flex-col">
+      {/* Map Section */}
+      <div className="relative w-full z-10">
+        <ItineraryMap
+          waypoints={waypoints}
+          routeGeoJSON={routeGeoJSON}
+          onMapClick={handleMapClick}
         />
 
-        <Button
-          type="submit"
-          className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold py-3.5 px-6 rounded-full shadow-lg transition-transform transform hover:scale-[1.02] active:scale-[0.98] mt-4"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Création..." : "Créer l'itinéraire"}
-        </Button>
-      </form>
-    </Form>
+        {/* Helper Badge for Type */}
+        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow-sm text-sm font-semibold text-primary z-10">
+          Mode: {type}
+        </div>
+      </div>
+
+      {/* Bottom Panel */}
+      <div className="relative z-20 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] rounded-t-3xl -mt-6">
+        <ItineraryBottomPanel
+          title={title}
+          onTitleChange={setTitle}
+          type={type}
+          onTypeChange={handleTypeChange}
+          distance={routeData?.distance || 0}
+          duration={routeData?.duration || 0}
+          steps={waypoints.length}
+          zone={zone}
+          onZoneChange={setZone}
+          diet={diet}
+          onDietChange={setDiet}
+          speciality={speciality}
+          onSpecialityChange={setSpeciality}
+          facts={facts}
+          onFactsChange={setFacts}
+          onSubmit={onSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </div>
+    </div>
   );
 }
