@@ -102,9 +102,9 @@ export default function ItineraryForm() {
     : null;
 
   return (
-    <div className="relative w-full flex flex-col">
+    <div className="fixed inset-0 z-40 flex flex-col md:flex-row bg-background">
       {/* Map Section */}
-      <div className="relative w-full z-10">
+      <div className="relative flex-none md:flex-1 w-full md:w-auto h-[70dvh] md:h-full z-10">
         <ItineraryMap
           waypoints={waypoints}
           routeGeoJSON={routeGeoJSON}
@@ -112,13 +112,13 @@ export default function ItineraryForm() {
         />
 
         {/* Helper Badge for Type */}
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow-sm text-sm font-semibold text-primary z-10">
+        <div className="absolute top-24 left-6 md:top-24 md:left-6 bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow-sm text-sm font-semibold text-primary z-10 border border-primary/10">
           Mode: {type}
         </div>
       </div>
 
-      {/* Bottom Panel */}
-      <div className="relative z-20 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] rounded-t-3xl -mt-6">
+      {/* Form Panel (Bottom on Mobile, Right on Desktop) */}
+      <div className="relative z-20 w-full md:w-[450px] lg:w-[500px] shrink-0 flex-1 md:flex-none md:h-full bg-accent rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none shadow-[0_-10px_30px_rgba(0,0,0,0.05)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.05)] -mt-6 md:mt-0 overflow-y-auto pb-6 md:pb-0">
         <ItineraryBottomPanel
           title={title}
           onTitleChange={setTitle}

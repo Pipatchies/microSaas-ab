@@ -28,7 +28,7 @@ export default function ItineraryMap({
     waypoints.length > 1 ? waypoints[waypoints.length - 1] : null;
 
   return (
-    <section className="relative w-full h-[65vh] md:h-[70vh] md:rounded-2xl overflow-hidden shadow-inner bg-gray-50">
+    <section className="relative w-full h-full overflow-hidden shadow-inner bg-gray-50">
       <Map
         initialViewState={{
           longitude: 2.3522,
@@ -108,12 +108,12 @@ export default function ItineraryMap({
 
       {/* Overlay: Add Start Point Button (if empty) */}
       {waypoints.length === 0 && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 w-auto">
+        <div className="absolute bottom-12 md:bottom-8 left-1/2 -translate-x-1/2 z-10 w-auto max-w-[90%] md:max-w-max">
           <CtaButton
             text="Ajouter le point de départ"
             iconLeft={MapPin}
             ctaVariant="solid"
-            className="shadow-xl"
+            className="shadow-xl whitespace-nowrap"
           />
         </div>
       )}
