@@ -25,7 +25,8 @@ const ctaVariants = cva(
 );
 
 export interface CtaButtonProps
-  extends Omit<React.ComponentProps<typeof Button>, "variant">,
+  extends
+    Omit<React.ComponentProps<typeof Button>, "variant">,
     VariantProps<typeof ctaVariants> {
   text: string;
   iconLeft?: LucideIcon;
