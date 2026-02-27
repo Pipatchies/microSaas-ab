@@ -16,7 +16,7 @@ type LinkTypographyProps = CommonTypographyProps & {
 
 // Typage pour les autres éléments
 type NonLinkTypographyProps = CommonTypographyProps & {
-  variant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "small" | "p";
+  variant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "small" | "p" | "label";
 };
 
 // Union des deux types
@@ -32,6 +32,7 @@ const variantClasses: Record<string, string> = {
   h4: "font-subtitle text-lg font-semibold text-foreground leading-relaxed text-white",
   h5: "font-subtitle text-lg text-foreground leading-relaxed text-white",
   h6: "font-subtitle text-base font-semibold text-foreground leading-relaxed text-white",
+  label: "font-subtitle text-base text-foreground leading-relaxed text-white",
 
   // Paragraphes - Libre Franklin (font-body)
   p: "font-body text-base text-foreground leading-relaxed text-white",
