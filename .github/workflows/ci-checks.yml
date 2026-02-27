@@ -31,7 +31,7 @@ jobs:
           pip install safety pytest pytest-django pylint black
 
       - name: Security audit (safety)
-        run: safety check
+        run: safety scan
 
       - name: Lint (pylint)
         run: pylint .
