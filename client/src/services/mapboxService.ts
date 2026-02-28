@@ -2,6 +2,7 @@ export interface MapboxRoute {
   coordinates: number[][];
   distance: number;
   duration: number;
+  legs: { distance: number; duration: number }[];
 }
 
 const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
@@ -35,6 +36,11 @@ export async function getDirections(
         coordinates: route.geometry.coordinates,
         distance: route.distance,
         duration: route.duration,
+        // Legs corresponds to the trip between each consecutive waypoint
+        legs: route.legs.map((leg: any) => ({
+          distance: leg.distance,
+          duration: leg.duration,
+        })),
       };
     }
   } catch (error) {
