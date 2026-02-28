@@ -53,7 +53,7 @@ export default function ItineraryMap({
                 "line-cap": "round",
               }}
               paint={{
-                "line-color": "#e11d48", // Primary color (red-ish)
+                "line-color": "#e44821",
                 "line-width": 4,
                 "line-opacity": 0.8,
               }}
@@ -69,7 +69,7 @@ export default function ItineraryMap({
             anchor="bottom"
           >
             <div className="relative group">
-              <MapPin className="text-green-600 w-8 h-8 drop-shadow-md fill-current" />
+              <MapPin className="text-primary w-8 h-8 drop-shadow-md fill-current" />
               <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-white px-2 py-1 rounded shadow text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 Départ
               </span>
@@ -85,7 +85,7 @@ export default function ItineraryMap({
             latitude={wp.lat}
             anchor="center"
           >
-            <div className="w-3 h-3 bg-white border-2 border-primary rounded-full shadow-sm" />
+            <div className="w-3 h-3 bg-primary border-white border-2 rounded-full shadow-sm" />
           </Marker>
         ))}
 
@@ -97,7 +97,7 @@ export default function ItineraryMap({
             anchor="bottom-left"
           >
             <div className="relative group">
-              <Flag className="text-red-600 w-8 h-8 drop-shadow-md fill-current" />
+              <Flag className="text-primary w-8 h-8 drop-shadow-md fill-current" />
               <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-white px-2 py-1 rounded shadow text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 Arrivée
               </span>
