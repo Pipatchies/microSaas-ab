@@ -1,5 +1,6 @@
 "use client";
 
+import { useFormContext, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,51 +13,30 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Route, Clock, MapPin } from "lucide-react";
 import Typography from "@/components/typography";
+import type { ItineraryFormValues } from "../components/ItineraryForm";
 
 interface ItineraryBottomPanelProps {
-  title: string;
-  onTitleChange: (value: string) => void;
-  type: string;
-  onTypeChange: (value: string) => void;
   distance: number;
   duration: number;
   steps: number;
-
-  // Extra fields
-  zone: string;
-  onZoneChange: (value: string) => void;
-  diet: string;
-  onDietChange: (value: string) => void;
-  speciality: string;
-  onSpecialityChange: (value: string) => void;
-  facts: string;
-  onFactsChange: (value: string) => void;
-
-  onSubmit: () => void;
-  isSubmitting: boolean;
+  onTypeChangeMap: (value: string) => void;
 }
 
 export default function ItineraryBottomPanel({
-  title,
-  onTitleChange,
-  type,
-  onTypeChange,
   distance,
   duration,
   steps,
-
-  zone,
-  onZoneChange,
-  diet,
-  onDietChange,
-  speciality,
-  onSpecialityChange,
-  facts,
-  onFactsChange,
-
-  onSubmit,
-  isSubmitting,
+  onTypeChangeMap,
 }: ItineraryBottomPanelProps) {
+  const {
+    register,
+    control,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useFormContext<ItineraryFormValues>();
+
+  const titleValue = watch("title");
+
   // Format duration
   const hours = Math.floor(duration / 3600);
   const minutes = Math.floor((duration % 3600) / 60);
@@ -75,11 +55,16 @@ export default function ItineraryBottomPanel({
           Titre de l'itinéraire
         </Typography>
         <Input
-          value={title}
-          onChange={(e) => onTitleChange(e.target.value)}
+          {...register("title")}
           placeholder=""
-          className="text-lg text-foreground font-medium border-secondary border-2 h-11 focus-visible:ring-secondary/50 bg-white"
+          data-testid="itinerary-title-input"
+          className={`text-lg text-foreground font-medium border-secondary border-2 h-11 focus-visible:ring-secondary/50 bg-white ${
+            errors.title ? "border-red-500" : ""
+          }`}
         />
+        {errors.title && (
+          <span className="text-red-500 text-sm">{errors.title.message}</span>
+        )}
       </div>
 
       {/* Short Stats Row */}
@@ -117,16 +102,31 @@ export default function ItineraryBottomPanel({
           >
             Moyen de transport
           </Typography>
-          <Select value={type} onValueChange={onTypeChange}>
-            <SelectTrigger className="w-full bg-white h-10 text-sm border-secondary">
-              <SelectValue placeholder="Type" />
-            </SelectTrigger>
-            <SelectContent className="border-secondary">
-              <SelectItem value="Rando">Rando</SelectItem>
-              <SelectItem value="Vélo">Vélo</SelectItem>
-              <SelectItem value="Moto">Moto</SelectItem>
-            </SelectContent>
-          </Select>
+          <Controller
+            control={control}
+            name="type"
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onValueChange={(val) => {
+                  field.onChange(val);
+                  onTypeChangeMap(val);
+                }}
+              >
+                <SelectTrigger
+                  data-testid="itinerary-type-select"
+                  className="w-full bg-white h-10 text-sm border-secondary"
+                >
+                  <SelectValue placeholder="Type" />
+                </SelectTrigger>
+                <SelectContent className="border-secondary">
+                  <SelectItem value="Rando">Rando</SelectItem>
+                  <SelectItem value="Vélo">Vélo</SelectItem>
+                  <SelectItem value="Moto">Moto</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
         </div>
         <div className="flex flex-col justify-end">
           <Typography
@@ -136,8 +136,8 @@ export default function ItineraryBottomPanel({
             Zone
           </Typography>
           <Input
-            value={zone}
-            onChange={(e) => onZoneChange(e.target.value)}
+            {...register("zone")}
+            data-testid="itinerary-zone-input"
             placeholder="Ex: Occitanie"
             className="h-10 text-sm bg-white border-secondary"
           />
@@ -150,8 +150,8 @@ export default function ItineraryBottomPanel({
             Régime
           </Typography>
           <Input
-            value={diet}
-            onChange={(e) => onDietChange(e.target.value)}
+            {...register("diet")}
+            data-testid="itinerary-diet-input"
             placeholder="Ex: Végétarien"
             className="h-10 text-sm bg-white border-secondary"
           />
@@ -164,8 +164,8 @@ export default function ItineraryBottomPanel({
             Spécialité
           </Typography>
           <Input
-            value={speciality}
-            onChange={(e) => onSpecialityChange(e.target.value)}
+            {...register("speciality")}
+            data-testid="itinerary-speciality-input"
             placeholder="Ex: Cassoulet"
             className="h-10 text-sm bg-white border-secondary"
           />
@@ -180,8 +180,8 @@ export default function ItineraryBottomPanel({
           Anecdote (Faits)
         </Typography>
         <Textarea
-          value={facts}
-          onChange={(e) => onFactsChange(e.target.value)}
+          {...register("facts")}
+          data-testid="itinerary-facts-textarea"
           placeholder="Petite histoire..."
           className="h-20 text-sm resize-none bg-white border-secondary"
         />
@@ -189,9 +189,10 @@ export default function ItineraryBottomPanel({
 
       {/* Submit Button */}
       <Button
+        type="submit"
+        data-testid="itinerary-submit-button"
         className="w-full py-6 text-lg rounded-full font-bold shadow-lg bg-secondary hover:bg-secondary/90 text-white transition-transform active:scale-[0.98]"
-        onClick={onSubmit}
-        disabled={isSubmitting || steps < 2 || !title}
+        disabled={isSubmitting || steps < 2 || !titleValue}
       >
         {isSubmitting ? "Création..." : "Créer l'itinéraire"}
       </Button>

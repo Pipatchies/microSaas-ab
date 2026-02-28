@@ -4,23 +4,46 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { MapMouseEvent } from "react-map-gl/mapbox";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
 import ItineraryMap from "@/app/(user)/itineraries/_sections/spaceMap";
 import ItineraryBottomPanel from "@/app/(user)/itineraries/_sections/spaceBottomPanel";
 import { getDirections } from "@/services/mapboxService";
 import { itineraryService } from "../services/itineraryService";
 import { MapboxRoute } from "@/services/mapboxService";
 
+export const itineraryFormSchema = z.object({
+  title: z.string().min(1, "Le titre est requis"),
+  type: z.string().min(1, "Le type est requis"),
+  zone: z.string().min(1, "La zone est requise"),
+  diet: z.string().min(1, "Le régime alimentaire est requis"),
+  speciality: z.string().min(1, "La spécialité est requise"),
+  facts: z.string().optional(),
+});
+
+export type ItineraryFormValues = z.infer<typeof itineraryFormSchema>;
+
 export default function ItineraryForm() {
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form State
-  const [title, setTitle] = useState("");
-  const [type, setType] = useState("Rando");
-  const [zone, setZone] = useState("");
-  const [diet, setDiet] = useState("");
-  const [speciality, setSpeciality] = useState("");
-  const [facts, setFacts] = useState("");
+  // React Hook Form
+  const methods = useForm<ItineraryFormValues>({
+    resolver: zodResolver(itineraryFormSchema),
+    defaultValues: {
+      title: "",
+      type: "Rando",
+      zone: "",
+      diet: "",
+      speciality: "",
+      facts: "",
+    },
+  });
+
+  const { handleSubmit, watch, setValue } = methods;
+
+  const currentType = watch("type");
 
   // Map State
   const [waypoints, setWaypoints] = useState<{ lng: number; lat: number }[]>(
@@ -37,7 +60,7 @@ export default function ItineraryForm() {
     if (newWaypoints.length >= 2) {
       toast.loading("Calcul de l'itinéraire...");
       try {
-        const result = await getDirections(type, newWaypoints);
+        const result = await getDirections(currentType, newWaypoints);
         if (result) {
           setRouteData(result);
           toast.dismiss();
@@ -55,26 +78,25 @@ export default function ItineraryForm() {
     }
   };
 
-  const handleTypeChange = async (newType: string) => {
-    setType(newType);
+  const handleTypeChangeMap = async (newType: string) => {
+    setValue("type", newType);
     if (waypoints.length >= 2) {
       const result = await getDirections(newType, waypoints);
       if (result) setRouteData(result);
     }
   };
 
-  const onSubmit = async () => {
-    setIsSubmitting(true);
+  const onSubmit = async (data: ItineraryFormValues) => {
     try {
       if (!routeData) throw new Error("Aucun itinéraire tracé.");
 
       await itineraryService.create({
-        title,
-        type,
-        zone: zone || "Non spécifiée",
-        diet: diet || "Tous",
-        speciality: speciality || "Aucune",
-        facts,
+        title: data.title,
+        type: data.type,
+        zone: data.zone,
+        diet: data.diet,
+        speciality: data.speciality,
+        facts: data.facts || "",
         distance: routeData.distance,
       });
 
@@ -84,8 +106,6 @@ export default function ItineraryForm() {
     } catch (err) {
       console.error(err);
       toast.error("Une erreur est survenue lors de la création.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -113,31 +133,22 @@ export default function ItineraryForm() {
 
         {/* Helper Badge for Type */}
         <div className="absolute top-24 left-6 md:top-24 md:left-6 bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow-sm text-sm font-semibold text-primary z-10 border border-primary/10">
-          Mode: {type}
+          Mode: {currentType}
         </div>
       </div>
 
       {/* Form Panel (Bottom on Mobile, Right on Desktop) */}
       <div className="relative z-20 w-full md:w-[450px] lg:w-[500px] shrink-0 flex-1 md:flex-none md:h-full bg-accent rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none shadow-[0_-10px_30px_rgba(0,0,0,0.05)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.05)] -mt-6 md:mt-0 overflow-y-auto pb-6 md:pb-0">
-        <ItineraryBottomPanel
-          title={title}
-          onTitleChange={setTitle}
-          type={type}
-          onTypeChange={handleTypeChange}
-          distance={routeData?.distance || 0}
-          duration={routeData?.duration || 0}
-          steps={waypoints.length}
-          zone={zone}
-          onZoneChange={setZone}
-          diet={diet}
-          onDietChange={setDiet}
-          speciality={speciality}
-          onSpecialityChange={setSpeciality}
-          facts={facts}
-          onFactsChange={setFacts}
-          onSubmit={onSubmit}
-          isSubmitting={isSubmitting}
-        />
+        <FormProvider {...methods}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <ItineraryBottomPanel
+              distance={routeData?.distance || 0}
+              duration={routeData?.duration || 0}
+              steps={waypoints.length}
+              onTypeChangeMap={handleTypeChangeMap}
+            />
+          </form>
+        </FormProvider>
       </div>
     </div>
   );
