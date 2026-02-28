@@ -4,6 +4,7 @@ export type Itinerary = {
   type: string;
   zone: string;
   distance: number;
+  duration: number;
   diet: string;
   speciality: string;
   facts?: string;

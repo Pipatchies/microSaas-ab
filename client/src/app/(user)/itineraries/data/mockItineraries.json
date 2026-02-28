@@ -5,6 +5,7 @@
     "type": "Randonnée",
     "zone": "Occitanie – Lauragais",
     "distance": 7.8,
+    "duration": 2,
     "diet": "Omnivore",
     "speciality": "Cassoulet traditionnel",
     "facts": "Une boucle douce autour du canal du Midi et des collines du Lauragais, berceau du cassoulet."
@@ -15,6 +16,7 @@
     "type": "Cyclo",
     "zone": "Nouvelle-Aquitaine – Gironde",
     "distance": 27.8,
+    "duration": 2,
     "diet": "Omnivore",
     "speciality": "Vins & cannelés bordelais",
     "facts": "Parcours vallonné à travers les vignobles classés UNESCO."
@@ -25,6 +27,7 @@
     "type": "Moto",
     "zone": "Grand Est – Vosges",
     "distance": 53.4,
+    "duration": 2,
     "diet": "Omnivore",
     "speciality": "Munster fermier",
     "facts": "Un des plus beaux itinéraires moto de France, paysages alpins."
