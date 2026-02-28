@@ -10,8 +10,12 @@ import * as z from "zod";
 
 import ItineraryMap from "@/app/(user)/itineraries/_sections/spaceMap";
 import ItineraryBottomPanel from "@/app/(user)/itineraries/_sections/spaceBottomPanel";
+import StepDrawer, {
+  StepDrawerData,
+} from "@/app/(user)/itineraries/components/step-drawer";
 import { getDirections } from "@/services/mapboxService";
 import { itineraryService } from "../services/itineraryService";
+import { stepService } from "../services/stepService";
 import { MapboxRoute } from "@/services/mapboxService";
 
 export const itineraryFormSchema = z.object({
@@ -45,24 +49,54 @@ export default function ItineraryForm() {
 
   const currentType = watch("type");
 
-  // Map State
-  const [waypoints, setWaypoints] = useState<{ lng: number; lat: number }[]>(
-    [],
-  );
+  // Drawer State
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [pendingPoint, setPendingPoint] = useState<{
+    lng: number;
+    lat: number;
+  } | null>(null);
+
+  // Map & Waypoints State
+  const [waypoints, setWaypoints] = useState<
+    (StepDrawerData & { lng: number; lat: number })[]
+  >([]);
   const [routeData, setRouteData] = useState<MapboxRoute | null>(null);
 
-  const handleMapClick = async (e: MapMouseEvent) => {
-    const newPoint = { lng: e.lngLat.lng, lat: e.lngLat.lat };
+  const handleMapClick = (e: MapMouseEvent) => {
+    setPendingPoint({ lng: e.lngLat.lng, lat: e.lngLat.lat });
+    setIsDrawerOpen(true);
+  };
+
+  const onSaveDrawer = async (data: StepDrawerData) => {
+    if (!pendingPoint) return;
+
+    const newPoint = { ...pendingPoint, ...data };
     const newWaypoints = [...waypoints, newPoint];
     setWaypoints(newWaypoints);
+    setIsDrawerOpen(false);
+    setPendingPoint(null);
 
     // Calculate route if we have at least 2 points
     if (newWaypoints.length >= 2) {
       toast.loading("Calcul de l'itinéraire...");
       try {
-        const result = await getDirections(currentType, newWaypoints);
+        const result = await getDirections(
+          currentType,
+          newWaypoints.map((wp) => ({ lng: wp.lng, lat: wp.lat })),
+        );
         if (result) {
           setRouteData(result);
+
+          // Inject distance into waypoints
+          // the 'legs' array length is always waypoints.length - 1
+          let runningDistance = 0;
+          const updatedWaypoints = newWaypoints.map((wp, index) => {
+            if (index === 0) return { ...wp, distanceFromStart: 0 };
+            runningDistance += result.legs[index - 1].distance;
+            return { ...wp, distanceFromStart: runningDistance };
+          });
+          setWaypoints(updatedWaypoints);
+
           toast.dismiss();
         } else {
           toast.dismiss();
@@ -81,7 +115,10 @@ export default function ItineraryForm() {
   const handleTypeChangeMap = async (newType: string) => {
     setValue("type", newType);
     if (waypoints.length >= 2) {
-      const result = await getDirections(newType, waypoints);
+      const result = await getDirections(
+        newType,
+        waypoints.map((wp) => ({ lng: wp.lng, lat: wp.lat })),
+      );
       if (result) setRouteData(result);
     }
   };
@@ -90,7 +127,7 @@ export default function ItineraryForm() {
     try {
       if (!routeData) throw new Error("Aucun itinéraire tracé.");
 
-      await itineraryService.create({
+      const newItinerary = await itineraryService.create({
         title: data.title,
         type: data.type,
         zone: data.zone,
@@ -98,7 +135,33 @@ export default function ItineraryForm() {
         speciality: data.speciality,
         facts: data.facts || "",
         distance: routeData.distance,
+        duration: routeData.duration,
       });
+
+      if (newItinerary.id_itinerary) {
+        // Here we could also loop and inject FoodPlace creation but for now we follow the simple Step flow.
+        // We assume stepService takes foodplace in payload or we just save the steps.
+        await Promise.all(
+          waypoints.map((wp, index) => {
+            return stepService.create({
+              itinerary_id: newItinerary.id_itinerary as number,
+              name: wp.name || `Étape ${index + 1}`,
+              description: wp.description || "",
+              picture: wp.picture || "",
+              longitude: wp.lng,
+              latitude: wp.lat,
+              step_order: index + 1,
+              foodplace: wp.foodplace
+                ? {
+                    ...wp.foodplace,
+                    longitude: wp.lng,
+                    latitude: wp.lat,
+                  }
+                : null,
+            });
+          }),
+        );
+      }
 
       toast.success("Itinéraire créé avec succès !");
       router.push("/itineraries");
@@ -145,11 +208,23 @@ export default function ItineraryForm() {
               distance={routeData?.distance || 0}
               duration={routeData?.duration || 0}
               steps={waypoints.length}
+              waypoints={waypoints}
               onTypeChangeMap={handleTypeChangeMap}
             />
           </form>
         </FormProvider>
       </div>
+
+      <StepDrawer
+        isOpen={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
+        onSave={onSaveDrawer}
+        defaultStepName={
+          waypoints.length === 0
+            ? "Point de départ"
+            : `Étape ${waypoints.length + 1}`
+        }
+      />
     </div>
   );
 }

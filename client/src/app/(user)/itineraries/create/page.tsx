@@ -1,4 +1,4 @@
-import ItineraryForm from "../components/ItineraryForm";
+import ItineraryForm from "../components/itinerary-form";
 
 export default function CreateItineraryPage() {
   return (

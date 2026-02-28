@@ -11,14 +11,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Route, Clock, MapPin } from "lucide-react";
+import { Route, Clock, MapPin, MapPinned, UtensilsCrossed } from "lucide-react";
 import Typography from "@/components/typography";
-import type { ItineraryFormValues } from "../components/ItineraryForm";
+import { StepList } from "@/components/step-list";
+import type { ItineraryFormValues } from "../components/itinerary-form";
+import type { StepDrawerData } from "../components/step-drawer";
 
 interface ItineraryBottomPanelProps {
   distance: number;
   duration: number;
   steps: number;
+  waypoints: (StepDrawerData & { lng: number; lat: number })[];
   onTypeChangeMap: (value: string) => void;
 }
 
@@ -26,6 +29,7 @@ export default function ItineraryBottomPanel({
   distance,
   duration,
   steps,
+  waypoints,
   onTypeChangeMap,
 }: ItineraryBottomPanelProps) {
   const {
@@ -49,7 +53,7 @@ export default function ItineraryBottomPanel({
       {/* Title Input */}
       <div className="flex flex-col gap-2">
         <Typography
-          variant="label"
+          variant="h4"
           className="text-xl font-medium text-foreground block"
         >
           Titre de l'itinéraire
@@ -186,6 +190,8 @@ export default function ItineraryBottomPanel({
           className="h-20 text-sm resize-none bg-white border-secondary"
         />
       </div>
+
+      {waypoints.length > 0 && <StepList steps={waypoints} />}
 
       {/* Submit Button */}
       <Button
