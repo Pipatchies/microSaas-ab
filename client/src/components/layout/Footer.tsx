@@ -28,12 +28,12 @@ export function Footer() {
     <footer className="fixed bottom-0 left-0 right-0 z-50 bg-primary px-6 py-4 pb-safe transition-all duration-300 shadow-t-lg">
       <nav className="flex items-center justify-between max-w-md mx-auto">
         <Link
-          href="/"
+          href="/itineraries"
           className={`group flex flex-col items-center gap-1 transition-colors ${getLinkClass(
-            "/",
+            "/itineraries",
           )}`}
         >
-          <Home className={getIconClass("/")} />
+          <Home className={getIconClass("/itineraries")} />
         </Link>
         <Link
           href="/community"
