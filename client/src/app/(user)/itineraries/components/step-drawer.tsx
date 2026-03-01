@@ -144,7 +144,7 @@ export default function StepDrawer({
             {hasFoodPlace && (
               <div className="p-4 border border-primary rounded-lg bg-accent space-y-3 mt-2">
                 <Typography
-                  variant="label"
+                  variant="h4"
                   className="text-sm text-primary block font-bold"
                 >
                   Nouveau FoodPlace
