@@ -2,7 +2,6 @@
 
 import { useFormContext, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -16,6 +15,7 @@ import Typography from "@/components/typography";
 import { StepList } from "@/components/step-list";
 import type { ItineraryFormValues } from "../components/itinerary-form";
 import type { StepDrawerData } from "../components/step-drawer";
+import { CtaButton } from "@/components/cta-button";
 
 interface ItineraryBottomPanelProps {
   distance: number;
@@ -194,14 +194,15 @@ export default function ItineraryBottomPanel({
       {waypoints.length > 0 && <StepList steps={waypoints} />}
 
       {/* Submit Button */}
-      <Button
-        type="submit"
-        data-testid="itinerary-submit-button"
-        className="w-full py-6 text-lg rounded-full font-bold shadow-lg bg-secondary hover:bg-secondary/90 text-white transition-transform active:scale-[0.98]"
-        disabled={isSubmitting || steps < 2 || !titleValue}
-      >
-        {isSubmitting ? "Création..." : "Créer l'itinéraire"}
-      </Button>
+      <div className="flex justify-center">
+        <CtaButton
+          type="submit"
+          data-testid="itinerary-submit-button"
+          text={isSubmitting ? "Création..." : "Créer l'itinéraire"}
+          disabled={isSubmitting || steps < 2 || !titleValue}
+          ctaVariant="solid"
+        />
+      </div>
     </section>
   );
 }

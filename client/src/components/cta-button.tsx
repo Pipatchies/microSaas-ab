@@ -5,17 +5,14 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const ctaVariants = cva(
-  "h-auto px-8 py-4 rounded-full font-medium text-lg transition-transform active:scale-[0.98]",
+  "px-9 py-5 rounded-xl font-medium text-base transition-transform active:scale-[0.98]",
   {
     variants: {
       ctaVariant: {
         solid:
-          "bg-secondary text-white hover:bg-secondary/90 border-2 border-secondary shadow-md",
+          "bg-secondary text-accent hover:bg-secondary/90 border-2 border-secondary shadow-md",
         outline:
           "bg-accent text-primary border-2 border-secondary hover:bg-accent/80",
-      },
-      fullWidth: {
-        true: "w-full",
       },
     },
     defaultVariants: {
@@ -38,14 +35,13 @@ export function CtaButton({
   iconLeft: IconLeft,
   iconRight: IconRight,
   ctaVariant,
-  fullWidth,
   className,
   ...props
 }: CtaButtonProps) {
   return (
     <Button
       variant="default"
-      className={cn(ctaVariants({ ctaVariant, fullWidth, className }))}
+      className={cn(ctaVariants({ ctaVariant, className }))}
       {...props}
     >
       {/* Icône à gauche */}
