@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { itineraryService } from "../services/itineraryService";
+import { itineraryService } from "../app/(user)/itineraries/services/itineraryService";
 import type { Itinerary } from "@/types/itinerary";
-import { ItineraryCard } from "./ItineraryCard";
+import { ItineraryCard } from "./itinerary-card";
 
 export function ItineraryList() {
   const [itineraries, setItineraries] = useState<Itinerary[]>([]);

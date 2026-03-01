@@ -1,7 +1,7 @@
 "use client";
 
 import Typography from "@/components/typography";
-import { ItineraryList } from "./components/ItineraryList";
+import { ItineraryList } from "../../../components/itinerary-list";
 
 export default function ItinerariesPage() {
   return (
