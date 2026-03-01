@@ -1,26 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
-import { itineraryService } from "./services/itineraryService";
-import { stepService } from "./services/stepService";
+import Typography from "@/components/typography";
+import { ItineraryList } from "./components/ItineraryList";
 
 export default function ItinerariesPage() {
-  useEffect(() => {
-    async function fetchData() {
-      const itineraries = await itineraryService.getAll();
-      console.log("Itineraries:", itineraries);
-
-      if (itineraries.length > 0) {
-        const itineraryId = itineraries[0].id_itinerary;
-        if (itineraryId !== undefined) {
-          const steps = await stepService.getByItinerary(itineraryId);
-          console.log(`Steps for Itinerary ${itineraryId}:`, steps);
-        }
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  return <div>Itineraries Page</div>;
+  return (
+    <div className="container mx-auto py-8">
+      <div className="mb-4">
+        <Typography variant="h2" className="text-3xl font-bold tracking-tight">
+          A LA UNE
+        </Typography>
+      </div>
+      <ItineraryList />
+    </div>
+  );
 }
