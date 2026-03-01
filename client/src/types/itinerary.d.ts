@@ -10,11 +10,25 @@ export type Itinerary = {
   facts?: string;
 };
 
+export type FoodPlace = {
+  id_foodplace?: number;
+  name: string;
+  type: string;
+  longitude: number;
+  latitude: number;
+  description: string;
+  mapbox_id?: number;
+};
+
 export type Step = {
   id_step?: number;
-  itinerary_id: number;
+  itinerary_id?: number;
+  id_foodplace?: number | null;
   name: string;
   description: string;
   longitude: number;
   latitude: number;
+  picture?: string;
+  step_order: number;
+  foodplace?: FoodPlace | null;
 };
