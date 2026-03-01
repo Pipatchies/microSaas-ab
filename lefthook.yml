@@ -44,5 +44,10 @@ pre-push:
       run: pnpm audit
 
     audit-backend:
-      root: "api"
-      run: docker-compose exec -T api pip-audit
+      root: "api/src"
+      run: |
+        if [ -f "./env/Scripts/python.exe" ]; then
+          ./env/Scripts/python.exe -m pip_audit
+        else
+          python -m pip_audit
+        fi

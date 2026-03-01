@@ -29,8 +29,10 @@ const realApi = {
     throw new Error("realApi not implemented yet");
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async create(_itinerary: Itinerary): Promise<void> {
-    // return fetch("/api/itineraries", { method: "POST", body: JSON.stringify(item) })
+  async create(
+    _itinerary: Omit<Itinerary, "id_itinerary">,
+  ): Promise<Itinerary> {
+    // return fetch("/api/itineraries", { method: "POST", body: JSON.stringify(_itinerary) }).then(res => res.json())
     throw new Error("realApi not implemented yet");
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
