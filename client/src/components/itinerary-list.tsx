@@ -5,7 +5,11 @@ import { itineraryService } from "../app/(user)/itineraries/services/itinerarySe
 import type { Itinerary } from "@/types/itinerary";
 import { ItineraryCard } from "./itinerary-card";
 
-export function ItineraryList() {
+interface ItineraryListProps {
+  selectedType?: string | null;
+}
+
+export function ItineraryList({ selectedType }: ItineraryListProps) {
   const [itineraries, setItineraries] = useState<Itinerary[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,13 +43,17 @@ export function ItineraryList() {
     return <div className="p-4 text-center">Chargement...</div>;
   }
 
-  if (itineraries.length === 0) {
+  const filteredItineraries = selectedType
+    ? itineraries.filter((it) => it.type === selectedType)
+    : itineraries;
+
+  if (filteredItineraries.length === 0) {
     return <div className="p-4 text-center">Aucun itinéraire trouvé.</div>;
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {itineraries.map((itinerary) => (
+      {filteredItineraries.map((itinerary) => (
         <ItineraryCard
           key={itinerary.id_itinerary}
           itinerary={itinerary}

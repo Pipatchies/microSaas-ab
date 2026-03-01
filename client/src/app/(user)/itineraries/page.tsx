@@ -1,9 +1,18 @@
 "use client";
 
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Typography from "@/components/typography";
 import { ItineraryList } from "../../../components/itinerary-list";
 import { CtaButton } from "@/components/cta-button";
 import Link from "next/link";
+
+function FilteredItineraryList() {
+  const searchParams = useSearchParams();
+  const typeParam = searchParams.get("type");
+
+  return <ItineraryList selectedType={typeParam} />;
+}
 
 export default function ItinerariesPage() {
   return (
@@ -14,7 +23,11 @@ export default function ItinerariesPage() {
         </Typography>
       </section>
       <section>
-        <ItineraryList />
+        <Suspense
+          fallback={<div className="p-4 text-center">Chargement...</div>}
+        >
+          <FilteredItineraryList />
+        </Suspense>
       </section>
 
       {/* Floating Action Button */}
