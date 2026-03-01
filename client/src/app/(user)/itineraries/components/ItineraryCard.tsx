@@ -19,7 +19,7 @@ export function ItineraryCard({ itinerary, onDelete }: ItineraryCardProps) {
     "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=1000";
 
   return (
-    <Card className="overflow-hidden relative border-none shadow-md group rounded-lg h-[350px] flex flex-col justify-end">
+    <Card className="overflow-hidden relative border-none shadow-xl group rounded-lg h-[280px] sm:h-[350px] flex flex-col justify-end py-4">
       {/* Background Image Section */}
       <div className="absolute inset-0 z-0 bg-muted">
         <Image
@@ -71,13 +71,12 @@ export function ItineraryCard({ itinerary, onDelete }: ItineraryCardProps) {
 
       {/* Content Section - Bottom Card */}
       <div className="relative z-10 px-3 pt-0 w-full">
-        <Card className="bg-accent border-none shadow-sm rounded-lg p-5 flex flex-col gap-4">
+        <Card className="bg-accent border-none shadow-sm rounded-lg p-3 flex flex-col gap-2">
           <div className="flex justify-between items-start gap-2">
-            <div className="space-y-1">
+            <div className="space-y-1 pr-2 overflow-hidden min-w-0">
               <Typography
                 variant="h5"
-                className="text-foreground text-sm
-              "
+                className="text-foreground text-sm leading-tight truncate"
               >
                 {itinerary.title}
               </Typography>
@@ -85,18 +84,18 @@ export function ItineraryCard({ itinerary, onDelete }: ItineraryCardProps) {
                 <MapPin className="w-3.5 h-3.5 text-primary shrink-0" />
                 <Typography
                   variant="h6"
-                  className="italic font-light text-xs m-0 p-0 leading-none"
+                  className="italic font-light text-xs m-0 p-0 leading-none truncate"
                 >
                   {itinerary.zone}
                 </Typography>
               </div>
             </div>
-            <div className="flex flex-col gap-1.5 shrink-0 md:flex-row flex-wrap justify-end">
-              <Badge className="bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-full px-3 py-0.5 font-medium text-xs shadow-none">
+            <div className="flex flex-row gap-1.5 shrink-0 items-start">
+              <Badge className="bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-full px-2 py-0.5 font-medium text-[8px] sm:text-xs shadow-none whitespace-nowrap">
                 {itinerary.type}
               </Badge>
               {itinerary.diet && (
-                <Badge className="bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-full px-3 py-0.5 font-medium text-xs shadow-none">
+                <Badge className="bg-secondary hover:bg-secondary/90 text-secondary-foreground rounded-full px-2 py-0.5 font-medium text-[8px] sm:text-xs shadow-none whitespace-nowrap">
                   {itinerary.diet}
                 </Badge>
               )}
