@@ -13,7 +13,6 @@ export function Header() {
 
   // Mapping paths to titles
   const getPageTitle = (path: string) => {
-    if (path === "/") return "TastyRoad";
     if (path.includes("/itineraries")) return "Itineraires";
     if (path.includes("/profile")) return "Mon Profil";
     if (path.includes("/community")) return "Communauté";
@@ -29,6 +28,10 @@ export function Header() {
         </div>
       </header>
     );
+  }
+
+  if (pathname === "/") {
+    return null;
   }
 
   return (
