@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const ctaVariants = cva(
-  "px-9 py-5 rounded-xl font-medium text-base transition-transform active:scale-[0.98]",
+  "px-9 py-5 rounded-xl font-medium text-base transition-transform active:scale-[0.98] cursor-pointer",
   {
     variants: {
       ctaVariant: {
