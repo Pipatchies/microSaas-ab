@@ -40,7 +40,9 @@ export function Header() {
 
       <div className="flex items-center w-full relative justify-center">
         {/* Center: Title */}
-        <Typography variant="h1">{getPageTitle(pathname)}</Typography>
+        <Typography variant="h1" className="text-accent">
+          {getPageTitle(pathname)}
+        </Typography>
       </div>
     </header>
   );
