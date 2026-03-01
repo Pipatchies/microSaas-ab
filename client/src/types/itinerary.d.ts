@@ -5,6 +5,7 @@ export type Itinerary = {
   zone: string;
   distance: number;
   duration: number;
+  difficulty: string;
   diet: string;
   speciality: string;
   facts?: string;

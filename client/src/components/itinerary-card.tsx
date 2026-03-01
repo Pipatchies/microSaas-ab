@@ -39,7 +39,7 @@ export function ItineraryCard({ itinerary, onDelete }: ItineraryCardProps) {
           variant="secondary"
           className="bg-accent text-primary hover:bg-accent/90 text-sm px-4 py-1 font-semibold rounded-full shadow-sm"
         >
-          Facile
+          {itinerary.difficulty}
         </Badge>
 
         <div className="flex flex-col items-end gap-3">
