@@ -1,6 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
 import {
   Drawer,
   DrawerClose,
@@ -31,6 +35,33 @@ interface StepDrawerProps {
   isSubmitting?: boolean;
 }
 
+const stepDrawerSchema = z
+  .object({
+    name: z.string().min(1, "Le nom de l'étape est requis"),
+    description: z.string().optional(),
+    picture: z
+      .string()
+      .optional()
+      .refine((val) => !val || /^https?:\/\/.+/.test(val), {
+        message: "L'URL de la photo doit commencer par http:// ou https://",
+      }),
+    hasFoodPlace: z.boolean(),
+    fpName: z.string().optional(),
+    fpType: z.string().optional(),
+    fpDesc: z.string().optional(),
+  })
+  .refine(
+    (data) =>
+      !data.hasFoodPlace ||
+      (data.hasFoodPlace && data.fpName && data.fpName.length > 0),
+    {
+      message: "Le nom du lieu est requis si un lieu de restauration est lié",
+      path: ["fpName"],
+    },
+  );
+
+type StepDrawerFormValues = z.infer<typeof stepDrawerSchema>;
+
 export default function StepDrawer({
   isOpen,
   onOpenChange,
@@ -38,40 +69,54 @@ export default function StepDrawer({
   defaultStepName = "Nouvelle Étape",
   isSubmitting = false,
 }: StepDrawerProps) {
-  const [name, setName] = useState(defaultStepName);
-  const [description, setDescription] = useState("");
-  const [picture, setPicture] = useState("");
+  const methods = useForm<StepDrawerFormValues>({
+    resolver: zodResolver(stepDrawerSchema),
+    defaultValues: {
+      name: defaultStepName,
+      description: "",
+      picture: "",
+      hasFoodPlace: false,
+      fpName: "",
+      fpType: "",
+      fpDesc: "",
+    },
+  });
 
-  // FoodPlace fields
-  const [hasFoodPlace, setHasFoodPlace] = useState(false);
-  const [fpName, setFpName] = useState("");
-  const [fpType, setFpType] = useState("");
-  const [fpDesc, setFpDesc] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors, isValid },
+  } = methods;
 
-  // Update default name when it changes (for example new step index)
+  const hasFoodPlace = watch("hasFoodPlace");
+
   useEffect(() => {
     if (isOpen) {
-      setName(defaultStepName);
-      setDescription("");
-      setPicture("");
-      setHasFoodPlace(false);
-      setFpName("");
-      setFpType("");
-      setFpDesc("");
+      reset({
+        name: defaultStepName,
+        description: "",
+        picture: "",
+        hasFoodPlace: false,
+        fpName: "",
+        fpType: "",
+        fpDesc: "",
+      });
     }
-  }, [isOpen, defaultStepName]);
+  }, [isOpen, defaultStepName, reset]);
 
-  const handleSave = () => {
+  const onSubmit = (data: StepDrawerFormValues) => {
     onSave({
-      name,
-      description,
-      picture: picture || undefined,
-      foodplace: hasFoodPlace
+      name: data.name,
+      description: data.description || "",
+      picture: data.picture || undefined,
+      foodplace: data.hasFoodPlace
         ? {
-            name: fpName,
-            type: fpType,
-            description: fpDesc,
-            longitude: 0, // Will be filled with Step's lng/lat later
+            name: data.fpName || "",
+            type: data.fpType || "",
+            description: data.fpDesc || "",
+            longitude: 0,
             latitude: 0,
           }
         : undefined,
@@ -81,130 +126,142 @@ export default function StepDrawer({
   return (
     <Drawer open={isOpen} onOpenChange={onOpenChange}>
       <DrawerContent className="max-h-[90vh]">
-        <div className="mx-auto w-full max-w-sm">
-          <DrawerHeader>
-            <DrawerTitle>
-              {" "}
-              <Typography variant="h2">Details de l'etape</Typography>
-            </DrawerTitle>
-            <DrawerDescription className="text-foreground">
-              Ajouter des informations sur ce point de l'itinéraire.
-            </DrawerDescription>
-          </DrawerHeader>
+        <FormProvider {...methods}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mx-auto w-full max-w-sm"
+          >
+            <DrawerHeader>
+              <DrawerTitle>
+                <Typography variant="h2">Details de l'etape</Typography>
+              </DrawerTitle>
+              <DrawerDescription className="text-foreground">
+                Ajouter des informations sur ce point de l'itinéraire.
+              </DrawerDescription>
+            </DrawerHeader>
 
-          <div className="p-4 pb-0 space-y-4 overflow-y-auto max-h-[50vh]">
-            <div className="space-y-2">
-              <Typography variant="label">Nom de l'étape*</Typography>
-              <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Ex: Pause déjeuner"
-                className="h-10 text-sm text-primary border-secondary focus-visible:ring-secondary/50 bg-accent"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Typography variant="label">Description</Typography>
-              <Textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Une brève description..."
-                className="resize-none h-20 text-sm text-primary border-secondary focus-visible:ring-secondary/50 bg-accent"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Typography variant="label">Photo</Typography>
-              <Input
-                type="url"
-                placeholder="https://..."
-                value={picture}
-                onChange={(e) => setPicture(e.target.value)}
-                className="h-10 text-sm text-primary border-secondary focus-visible:ring-secondary/50 bg-accent"
-              />
-            </div>
-
-            <div className="flex items-center gap-2 pt-2">
-              <input
-                type="checkbox"
-                id="foodplace-check"
-                checked={hasFoodPlace}
-                onChange={(e) => setHasFoodPlace(e.target.checked)}
-                className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
-              />
-              <label
-                htmlFor="foodplace-check"
-                className="text-sm font-semibold leading-none cursor-pointer"
-              >
-                Lier un lieu de restauration (FoodPlace)
-              </label>
-            </div>
-
-            {hasFoodPlace && (
-              <div className="p-4 border border-primary rounded-lg bg-accent space-y-3 mt-2">
-                <Typography
-                  variant="h4"
-                  className="text-sm text-primary block font-bold"
-                >
-                  Nouveau FoodPlace
-                </Typography>
-                <div className="space-y-2">
-                  <Typography
-                    variant="label"
-                    className="text-sm text-foreground"
-                  >
-                    Nom du lieu*
-                  </Typography>
-                  <Input
-                    value={fpName}
-                    onChange={(e) => setFpName(e.target.value)}
-                    placeholder="Ex: Auberge du Lac"
-                    className="h-9 text-sm text-primary border-primary focus-visible:ring-primary/50 bg-white"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Typography
-                    variant="label"
-                    className="text-sm text-foreground"
-                  >
-                    Type de cuisine
-                  </Typography>
-                  <Input
-                    value={fpType}
-                    onChange={(e) => setFpType(e.target.value)}
-                    placeholder="Ex: Traditionnelle"
-                    className="h-9 text-sm text-primary border-primary focus-visible:ring-primary/50 bg-white"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Typography
-                    variant="label"
-                    className="text-sm text-foreground"
-                  >
-                    Description
-                  </Typography>
-                  <Textarea
-                    value={fpDesc}
-                    onChange={(e) => setFpDesc(e.target.value)}
-                    placeholder="..."
-                    className="h-16 resize-none text-sm text-primary border-primary focus-visible:ring-primary/50 bg-white"
-                  />
-                </div>
+            <div className="p-4 pb-0 space-y-4 overflow-y-auto max-h-[50vh]">
+              <div className="space-y-2">
+                <Typography variant="label">Nom de l'étape*</Typography>
+                <Input
+                  {...register("name")}
+                  placeholder="Ex: Pause déjeuner"
+                  className={`h-10 text-sm text-primary border-secondary focus-visible:ring-secondary/50 bg-accent ${errors.name ? "border-red-500" : ""}`}
+                />
+                {errors.name && (
+                  <span className="text-red-500 text-xs">
+                    {errors.name.message}
+                  </span>
+                )}
               </div>
-            )}
-          </div>
 
-          <DrawerFooter>
-            <CtaButton
-              onClick={handleSave}
-              disabled={isSubmitting || !name || (hasFoodPlace && !fpName)}
-              text={isSubmitting ? "Validation..." : "Valider l'étape"}
-            />
-            <DrawerClose asChild>
-              <CtaButton ctaVariant="outline" text="Annuler" />
-            </DrawerClose>
-          </DrawerFooter>
-        </div>
+              <div className="space-y-2">
+                <Typography variant="label">Description</Typography>
+                <Textarea
+                  {...register("description")}
+                  placeholder="Une brève description..."
+                  className="resize-none h-20 text-sm text-primary border-secondary focus-visible:ring-secondary/50 bg-accent"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Typography variant="label">Photo (Optionnel)</Typography>
+                <Input
+                  type="text"
+                  {...register("picture")}
+                  placeholder="https://..."
+                  className={`h-10 text-sm text-primary border-secondary focus-visible:ring-secondary/50 bg-accent ${errors.picture ? "border-red-500" : ""}`}
+                />
+                {errors.picture && (
+                  <span className="text-red-500 text-xs">
+                    {errors.picture.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2 pt-2">
+                <input
+                  type="checkbox"
+                  id="foodplace-check"
+                  {...register("hasFoodPlace")}
+                  className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                />
+                <label
+                  htmlFor="foodplace-check"
+                  className="text-sm font-semibold leading-none cursor-pointer"
+                >
+                  Lier un lieu de restauration (FoodPlace)
+                </label>
+              </div>
+
+              {hasFoodPlace && (
+                <div className="p-4 border border-primary rounded-lg bg-accent space-y-3 mt-2">
+                  <Typography
+                    variant="h4"
+                    className="text-sm text-primary block font-bold"
+                  >
+                    Nouveau FoodPlace
+                  </Typography>
+                  <div className="space-y-2">
+                    <Typography
+                      variant="label"
+                      className="text-sm text-foreground"
+                    >
+                      Nom du lieu*
+                    </Typography>
+                    <Input
+                      {...register("fpName")}
+                      placeholder="Ex: Auberge du Lac"
+                      className={`h-9 text-sm text-primary border-primary focus-visible:ring-primary/50 bg-white ${errors.fpName ? "border-red-500" : ""}`}
+                    />
+                    {errors.fpName && (
+                      <span className="text-red-500 text-xs">
+                        {errors.fpName.message}
+                      </span>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Typography
+                      variant="label"
+                      className="text-sm text-foreground"
+                    >
+                      Type de cuisine
+                    </Typography>
+                    <Input
+                      {...register("fpType")}
+                      placeholder="Ex: Traditionnelle"
+                      className="h-9 text-sm text-primary border-primary focus-visible:ring-primary/50 bg-white"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Typography
+                      variant="label"
+                      className="text-sm text-foreground"
+                    >
+                      Description
+                    </Typography>
+                    <Textarea
+                      {...register("fpDesc")}
+                      placeholder="..."
+                      className="h-16 resize-none text-sm text-primary border-primary focus-visible:ring-primary/50 bg-white"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <DrawerFooter>
+              <CtaButton
+                type="submit"
+                disabled={isSubmitting || !isValid}
+                text={isSubmitting ? "Validation..." : "Valider l'étape"}
+              />
+              <DrawerClose asChild>
+                <CtaButton type="button" ctaVariant="outline" text="Annuler" />
+              </DrawerClose>
+            </DrawerFooter>
+          </form>
+        </FormProvider>
       </DrawerContent>
     </Drawer>
   );

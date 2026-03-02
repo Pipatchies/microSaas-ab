@@ -24,6 +24,7 @@ export const itineraryFormSchema = z.object({
   zone: z.string().min(1, "La zone est requise"),
   diet: z.string().min(1, "Le régime alimentaire est requis"),
   speciality: z.string().min(1, "La spécialité est requise"),
+  difficulty: z.string().min(1, "La difficulté est requise"),
   facts: z.string().optional(),
 });
 
@@ -41,6 +42,7 @@ export default function ItineraryForm() {
       zone: "",
       diet: "",
       speciality: "",
+      difficulty: "",
       facts: "",
     },
   });
@@ -136,31 +138,43 @@ export default function ItineraryForm() {
         facts: data.facts || "",
         distance: routeData.distance,
         duration: routeData.duration,
+        difficulty: data.difficulty,
       });
 
       if (newItinerary.id_itinerary) {
-        // Here we could also loop and inject FoodPlace creation but for now we follow the simple Step flow.
-        // We assume stepService takes foodplace in payload or we just save the steps.
-        await Promise.all(
-          waypoints.map((wp, index) => {
-            return stepService.create({
-              itinerary_id: newItinerary.id_itinerary as number,
-              name: wp.name || `Étape ${index + 1}`,
-              description: wp.description || "",
-              picture: wp.picture || "",
-              longitude: wp.lng,
-              latitude: wp.lat,
-              step_order: index + 1,
-              foodplace: wp.foodplace
-                ? {
-                    ...wp.foodplace,
-                    longitude: wp.lng,
-                    latitude: wp.lat,
-                  }
-                : null,
-            });
-          }),
-        );
+        // Sequential saving to respect ForeignKey dependencies: FoodPlace -> Step
+        for (let i = 0; i < waypoints.length; i++) {
+          const wp = waypoints[i];
+          let createdFoodPlaceId = null;
+
+          // 1. If step has a foodplace linked, create it first
+          if (wp.foodplace) {
+            const newFp = await import("../services/foodPlaceService").then(
+              (m) =>
+                m.foodPlaceService.create({
+                  name: wp.foodplace!.name,
+                  type: wp.foodplace!.type,
+                  description: wp.foodplace!.description,
+                  longitude: wp.lng,
+                  latitude: wp.lat,
+                  mapbox_id: undefined,
+                }),
+            );
+            createdFoodPlaceId = newFp.id_foodplace;
+          }
+
+          // 2. Create the step and assign the foodplace ID if it exists
+          await stepService.create({
+            itinerary_id: newItinerary.id_itinerary as number,
+            name: wp.name || `Étape ${i + 1}`,
+            description: wp.description || "",
+            picture: wp.picture || "",
+            longitude: wp.lng,
+            latitude: wp.lat,
+            step_order: i + 1,
+            id_foodplace: createdFoodPlaceId,
+          } as any);
+        }
       }
 
       toast.success("Itinéraire créé avec succès !");

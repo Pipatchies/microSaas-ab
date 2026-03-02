@@ -1,0 +1,212 @@
+[
+  {
+    "model": "itineraries.Step",
+    "pk": 1,
+    "fields": {
+      "itinerary": 1,
+      "name": "D\u00e9part aux \u00e9cluses",
+      "description": "D\u00e9part rafra\u00eechissant depuis le bas des quatre \u00e9cluses en espalier de Saint-Roch.",
+      "longitude": 1.9448,
+      "latitude": 43.3134,
+      "picture": "https://images.unsplash.com/photo-1549420042-0a811802d847?auto=format&fit=crop&q=80&w=800",
+      "step_order": 1,
+      "food_place": null
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 2,
+    "fields": {
+      "itinerary": 1,
+      "name": "Berges mi-ombrag\u00e9es",
+      "description": "Balade sur l'ancien chemin de halage bord\u00e9 de platanes centenaires.",
+      "longitude": 1.9485,
+      "latitude": 43.315,
+      "picture": "https://images.unsplash.com/photo-1522271815195-2cc341bcdae8?auto=format&fit=crop&q=80&w=800",
+      "step_order": 2,
+      "food_place": null
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 3,
+    "fields": {
+      "itinerary": 1,
+      "name": "D\u00e9gustation strat\u00e9gique",
+      "description": "L'heure du gros r\u00e9confort : arr\u00eat obligatoire pour le cassoulet en cassolette d'argile.",
+      "longitude": 1.9542,
+      "latitude": 43.3167,
+      "picture": "https://images.unsplash.com/photo-1596649233041-e8d983fc1953?auto=format&fit=crop&q=80&w=800",
+      "step_order": 3,
+      "food_place": 1
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 4,
+    "fields": {
+      "itinerary": 2,
+      "name": "Le Clo\u00eetre R\u00e9gal",
+      "description": "Top d\u00e9part devant l'\u00e9glise monolithe creus\u00e9e dans la roche.",
+      "longitude": -0.1555,
+      "latitude": 44.8937,
+      "picture": "https://images.unsplash.com/photo-1591146755498-8ec12f71f65d?auto=format&fit=crop&q=80&w=800",
+      "step_order": 1,
+      "food_place": null
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 5,
+    "fields": {
+      "itinerary": 2,
+      "name": "Provision de Cannel\u00e9s",
+      "description": "Impossible de continuer \u00e0 p\u00e9daler sans quelques viennoiseries au rhum et \u00e0 la vanille.",
+      "longitude": -0.1558,
+      "latitude": 44.892,
+      "picture": "https://images.unsplash.com/photo-1628198751509-38b9351de835?auto=format&fit=crop&q=80&w=800",
+      "step_order": 2,
+      "food_place": 4
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 6,
+    "fields": {
+      "itinerary": 2,
+      "name": "Les vignes \u00e0 perte de vue",
+      "description": "Mont\u00e9e vers les plateaux calcaires qui font la r\u00e9putation mondiale du vin d'ici.",
+      "longitude": -0.1561,
+      "latitude": 44.8953,
+      "picture": "https://images.unsplash.com/photo-1506509939634-118df26dcb19?auto=format&fit=crop&q=80&w=800",
+      "step_order": 3,
+      "food_place": 3
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 7,
+    "fields": {
+      "itinerary": 3,
+      "name": "Col de la Schlucht",
+      "description": "D\u00e9part sportif sous une l\u00e9g\u00e8re brume matinale.",
+      "longitude": 7.0215,
+      "latitude": 48.0645,
+      "picture": "https://images.unsplash.com/photo-1620023419163-cf99158ff89c?auto=format&fit=crop&q=80&w=800",
+      "step_order": 1,
+      "food_place": null
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 8,
+    "fields": {
+      "itinerary": 3,
+      "name": "Virages \u00e9pingles du Hohneck",
+      "description": "On pose doucement le genou sur le macadam bien chauff\u00e9 de l'apr\u00e8s-midi.",
+      "longitude": 7.022,
+      "latitude": 48.0375,
+      "picture": "https://images.unsplash.com/photo-1449426468159-d96dbf08f19f?auto=format&fit=crop&q=80&w=800",
+      "step_order": 2,
+      "food_place": null
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 9,
+    "fields": {
+      "itinerary": 3,
+      "name": "Fromage au sommet",
+      "description": "B\u00e9quilles pos\u00e9es, on s'attaque au fameux Munster g\u00e9rom\u00e9 accompagn\u00e9 de pommes de terres r\u00f4ties.",
+      "longitude": 7.0425,
+      "latitude": 47.9867,
+      "picture": "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?auto=format&fit=crop&q=80&w=800",
+      "step_order": 3,
+      "food_place": 5
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 10,
+    "fields": {
+      "itinerary": 4,
+      "name": "Porte Saint-Vincent",
+      "description": "D\u00e9but de l'ascension sur les imposantes murailles qui entourent la ville intra-muros.",
+      "longitude": -2.025,
+      "latitude": 48.6495,
+      "picture": "https://images.unsplash.com/photo-1644070669149-c167d4ac8de4?auto=format&fit=crop&q=80&w=800",
+      "step_order": 1,
+      "food_place": null
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 11,
+    "fields": {
+      "itinerary": 4,
+      "name": "Pause sucr\u00e9e engag\u00e9e",
+      "description": "Un repaire pour savourer le c\u00e9l\u00e8bre g\u00e2teau feuillet\u00e9 sans ingr\u00e9dient d'origine animale. Bluffant !",
+      "longitude": -2.0255,
+      "latitude": 48.6491,
+      "picture": "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&q=80&w=800",
+      "step_order": 2,
+      "food_place": 6
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 12,
+    "fields": {
+      "itinerary": 4,
+      "name": "Fort National en vue",
+      "description": "Balade expos\u00e9e aux vents marins avec panorama d\u00e9gag\u00e9 sur l'\u00eele d'\u00e9meraude.",
+      "longitude": -2.026,
+      "latitude": 48.653,
+      "picture": "https://images.unsplash.com/photo-1596707371537-83cffce2e564?auto=format&fit=crop&q=80&w=800",
+      "step_order": 3,
+      "food_place": null
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 13,
+    "fields": {
+      "itinerary": 5,
+      "name": "Puy Pariou",
+      "description": "Les mollets chauffent dans l'ascension de ce magnifique crat\u00e8re \u00e9teint.",
+      "longitude": 2.9691,
+      "latitude": 45.7952,
+      "picture": "https://images.unsplash.com/photo-1605300057997-6a2c130d7b3a?auto=format&fit=crop&q=80&w=800",
+      "step_order": 1,
+      "food_place": null
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 14,
+    "fields": {
+      "itinerary": 5,
+      "name": "Les cr\u00eates et les p\u00e2turages",
+      "description": "Terrain ouvert qui serpente le long des \u00e9tendues vertes m\u00e9lancoliques.",
+      "longitude": 2.943,
+      "latitude": 45.621,
+      "picture": "https://images.unsplash.com/photo-1506744626753-1fa28f6e2b61?auto=format&fit=crop&q=80&w=800",
+      "step_order": 2,
+      "food_place": null
+    }
+  },
+  {
+    "model": "itineraries.Step",
+    "pk": 15,
+    "fields": {
+      "itinerary": 5,
+      "name": "R\u00e9compense fondue",
+      "description": "Apr\u00e8s 40km de D\u00e9nivel\u00e9 Positif, arr\u00eat dans ce vieux buron d'Auvergne.",
+      "longitude": 2.923,
+      "latitude": 45.451,
+      "picture": "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&q=80&w=800",
+      "step_order": 3,
+      "food_place": 7
+    }
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "model": "places.FoodPlace",
+    "pk": 1,
+    "fields": {
+      "name": "Auberge Imp\u00e9riale",
+      "type": "Auberge Traditionnelle",
+      "longitude": 1.9542,
+      "latitude": 43.3167,
+      "description": "Un repaire historique de sp\u00e9cialit\u00e9s de l'Aude avec vue sur le canal.",
+      "mapbox_id": "poi.cassoulet_1"
+    }
+  },
+  {
+    "model": "places.FoodPlace",
+    "pk": 2,
+    "fields": {
+      "name": "Bouchon du Chef",
+      "type": "Bistrot",
+      "longitude": 4.832,
+      "latitude": 45.7578,
+      "description": "Tradition M\u00e2chonnaise au c\u0153ur de Lyon. P\u00e2t\u00e9 en cro\u00fbte incontournable.",
+      "mapbox_id": "poi.bouchon_1"
+    }
+  },
+  {
+    "model": "places.FoodPlace",
+    "pk": 3,
+    "fields": {
+      "name": "Ch\u00e2teau La Gomerie",
+      "type": "Domaine Viticole",
+      "longitude": -0.1561,
+      "latitude": 44.8953,
+      "description": "D\u00e9gustation de grands crus class\u00e9s dans un cadre pittoresque.",
+      "mapbox_id": "poi.vignes_1"
+    }
+  },
+  {
+    "model": "places.FoodPlace",
+    "pk": 4,
+    "fields": {
+      "name": "La M\u00e9tairie des Cannel\u00e9s",
+      "type": "Boulangerie-P\u00e2tisserie",
+      "longitude": -0.1558,
+      "latitude": 44.892,
+      "description": "Leurs cannel\u00e9s tout juste sortis du four sont une v\u00e9ritable institution locale.",
+      "mapbox_id": "poi.canneles_1"
+    }
+  },
+  {
+    "model": "places.FoodPlace",
+    "pk": 5,
+    "fields": {
+      "name": "Ferme Auberge Kahlenwasen",
+      "type": "Ferme Auberge",
+      "longitude": 7.0425,
+      "latitude": 47.9867,
+      "description": "Table marcaire authentique, tourte de la vall\u00e9e et munster de leur propre production.",
+      "mapbox_id": "poi.munster_1"
+    }
+  },
+  {
+    "model": "places.FoodPlace",
+    "pk": 6,
+    "fields": {
+      "name": "Caf\u00e9 Breton V\u00e9gan",
+      "type": "Salon de Th\u00e9 V\u00e9gan",
+      "longitude": -2.0255,
+      "latitude": 48.6491,
+      "description": "Sp\u00e9cialis\u00e9 dans les p\u00e2tisseries bretonnes r\u00e9invent\u00e9es sans produits d'origine animale.",
+      "mapbox_id": "poi.breton_1"
+    }
+  },
+  {
+    "model": "places.FoodPlace",
+    "pk": 7,
+    "fields": {
+      "name": "Buron de la Combe",
+      "type": "Auberge d'Altitude",
+      "longitude": 2.923,
+      "latitude": 45.451,
+      "description": "Une institution pour la fondue ou la truffade au Saint-Nectaire apr\u00e8s la grimpette.",
+      "mapbox_id": "poi.saintnectaire_1"
+    }
+  }
+]

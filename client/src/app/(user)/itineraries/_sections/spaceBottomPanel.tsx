@@ -98,7 +98,7 @@ export default function ItineraryBottomPanel({
       </div>
 
       {/* Additional Details Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-primary/10">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 pt-6 border-t border-primary/10">
         <div className="flex flex-col justify-end">
           <Typography
             variant="label"
@@ -132,6 +132,36 @@ export default function ItineraryBottomPanel({
             )}
           />
         </div>
+
+        <div className="flex flex-col justify-end">
+          <Typography
+            variant="label"
+            className="text-sm font-semibold text-foreground mb-1.5 block"
+          >
+            Difficulté
+          </Typography>
+          <Controller
+            control={control}
+            name="difficulty"
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger
+                  data-testid="itinerary-difficulty-select"
+                  className={`w-full bg-white h-10 text-sm border-secondary ${errors.difficulty ? "border-red-500" : ""}`}
+                >
+                  <SelectValue placeholder="Ex: Facile" />
+                </SelectTrigger>
+                <SelectContent className="border-secondary">
+                  <SelectItem value="Facile">Facile</SelectItem>
+                  <SelectItem value="Moyen">Moyen</SelectItem>
+                  <SelectItem value="Difficile">Difficile</SelectItem>
+                  <SelectItem value="Extrême">Extrême</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
+          />
+        </div>
+
         <div className="flex flex-col justify-end">
           <Typography
             variant="label"
@@ -143,7 +173,7 @@ export default function ItineraryBottomPanel({
             {...register("zone")}
             data-testid="itinerary-zone-input"
             placeholder="Ex: Occitanie"
-            className="h-10 text-sm bg-white border-secondary"
+            className={`h-10 text-sm bg-white border-secondary ${errors.zone ? "border-red-500" : ""}`}
           />
         </div>
         <div className="flex flex-col justify-end">
