@@ -84,6 +84,13 @@ const realApi = {
         payload.itinerary = payload.itinerary_id;
       }
 
+      // Map id_foodplace to Django's expected 'food_place' foreign key field
+      if (payload.id_foodplace) {
+        payload.food_place = payload.id_foodplace;
+      }
+      // Remove any leftover frontend objects hitting the API
+      delete payload.foodplace;
+
       const response = await fetch(`${getBaseUrl()}/api/steps/`, {
         method: "POST",
         headers: {
