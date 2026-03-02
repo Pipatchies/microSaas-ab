@@ -1,6 +1,6 @@
 [tool.black]
 line-length = 88
-target-version = ["py311"]
+target-version = ["py312"]
 exclude = '''
 /(
         \.git
@@ -12,3 +12,19 @@ exclude = '''
     | dist
 )/
 '''
+
+[tool.pylint.main]
+ignore-paths = ["src/.*/migrations/.*"]
+
+[tool.pylint.messages_control]
+# Django false positives: ORM manager, ViewSet ancestors, migration duplicate code
+disable = [
+    "E1101",  # no-member: Django ORM .objects, DRF queryset attrs
+    "R0901",  # too-many-ancestors: DRF ViewSet/ModelViewSet inheritance chain
+    "R0801",  # duplicate-code: auto-generated migration boilerplate
+    "R0903",  # too-few-public-methods: DRF Meta inner classes, serializers
+    "E0307",  # invalid-str-returned: false positive on CharField-backed __str__
+]
+
+[tool.pylint.format]
+max-line-length = 120
