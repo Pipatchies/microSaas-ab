@@ -25,10 +25,10 @@ class Step(models.Model):
         Itinerary, on_delete=models.CASCADE, related_name="steps"
     )
     name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, null=True)
     longitude = models.FloatField()
     latitude = models.FloatField()
-    picture = models.URLField(blank=True)
+    picture = models.URLField(blank=True, null=True)
     step_order = models.PositiveIntegerField()
     food_place = models.ForeignKey(
         "places.FoodPlace",
