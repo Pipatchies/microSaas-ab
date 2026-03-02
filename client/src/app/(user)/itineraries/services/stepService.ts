@@ -84,6 +84,9 @@ const realApi = {
         payload.itinerary = payload.itinerary_id;
       }
 
+      if (payload.picture === "") payload.picture = null;
+      if (payload.description === "") payload.description = null;
+
       // Map id_foodplace to Django's expected 'food_place' foreign key field
       if (payload.id_foodplace) {
         payload.food_place = payload.id_foodplace;
