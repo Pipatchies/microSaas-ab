@@ -17,3 +17,31 @@ class Itinerary(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.type})"
+
+
+class Step(models.Model):
+    id_step = models.AutoField(primary_key=True)
+    itinerary = models.ForeignKey(
+        Itinerary, on_delete=models.CASCADE, related_name="steps"
+    )
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
+    picture = models.URLField(blank=True)
+    step_order = models.PositiveIntegerField()
+    food_place = models.ForeignKey(
+        "places.FoodPlace",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="steps",
+    )
+
+    class Meta:
+        ordering = ["step_order"]
+        verbose_name = "Step"
+        verbose_name_plural = "Steps"
+
+    def __str__(self):
+        return f"{self.itinerary.title} - Step {self.step_order}: {self.name}"
