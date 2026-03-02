@@ -43,10 +43,12 @@ pre-push:
       run: pnpm audit
 
     audit-backend:
-      root: "api/src"
+      root: "api"
       run: |
-        if [ -f "./env/Scripts/python.exe" ]; then
-          ./env/Scripts/python.exe -m pip_audit
+        if [ -f "./env/Scripts/pip-audit" ]; then
+          ./env/Scripts/pip-audit
+        elif [ -f "./env/bin/pip-audit" ]; then
+          ./env/bin/pip-audit
         else
-          python -m pip_audit
+          pip-audit
         fi
