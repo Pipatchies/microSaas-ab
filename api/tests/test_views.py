@@ -7,7 +7,7 @@ import pytest
 from rest_framework.test import APIClient
 from rest_framework import status
 from places.models import FoodPlace
-from itineraries.models import Itinerary, Step
+from itineraries.models import Itinerary
 
 
 @pytest.fixture

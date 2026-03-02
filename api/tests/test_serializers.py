@@ -6,7 +6,7 @@ Vérifie les payloads valides et invalides (sans accès en base de données).
 import pytest
 from places.models import FoodPlace
 from places.serializers import FoodPlaceSerializer
-from itineraries.models import Itinerary, Step
+from itineraries.models import Itinerary
 from itineraries.serializers import ItinerarySerializer, StepSerializer
 
 
