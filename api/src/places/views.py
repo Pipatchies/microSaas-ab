@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import FoodPlace
+from .serializers import FoodPlaceSerializer
 
-# Create your views here.
+
+class FoodPlaceViewSet(viewsets.ModelViewSet):
+    queryset = FoodPlace.objects.all()
+    serializer_class = FoodPlaceSerializer
