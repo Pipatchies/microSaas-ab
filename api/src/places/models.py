@@ -8,7 +8,7 @@ class FoodPlace(models.Model):
     longitude = models.FloatField()
     latitude = models.FloatField()
     description = models.TextField(blank=True)
-    mapbox_id = models.CharField(max_length=100, unique=True)
+    mapbox_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
