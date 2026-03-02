@@ -42,6 +42,7 @@ export default function ItineraryForm() {
       zone: "",
       diet: "",
       speciality: "",
+      difficulty: "",
       facts: "",
     },
   });
