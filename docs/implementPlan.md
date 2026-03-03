@@ -52,14 +52,20 @@ npx create-next-app@latest tastyroad
 - Créer l'environnement de dev Python :
 
 ```bash
-python -m venv venv
-source venv/bin/activate
+python -m venv env
+env/Scripts/activate
 ```
 
 - Installer Django et Django REST Framework :
 
 ```bash
 pip install django djangorestframework
+```
+
+- Installer le package qui sert à gérer les règles CORS :
+
+```bash
+pip install django-cors-headers
 ```
 
 - Créer le projet dans le dossier `api` :
@@ -70,6 +76,17 @@ django-admin startproject config src
 
 Cela va créer manage.py, un script qui va permettre de lancer les commandes Django (lancer le serveur, créer une app, faire les migrations, etc...), et un dossier config qui va regrouper la config générale, les routes principales et le déploiement du serveur.
 
-- Installer Pylint et Black pour le linting et le formatage du code.
+- Installer Pylint et Black pour le linting et le formatage du code. 
+
+```bash
+pip install pylint black
+```
+Toutes les commandes doivent être lancées depuis l'environnement de dev créé précédemment.
 
 - Créer mes différentes app Django (à suivre...)
+
+- Pour lancer le serveur :
+
+```bash
+python manage.py runserver
+```

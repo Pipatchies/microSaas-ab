@@ -1,0 +1,54 @@
+# EXAMPLE USAGE:
+#
+#   Refer for explanation to following link:
+#   https://lefthook.dev/configuration/
+#
+
+pre-commit:
+  parallel: true
+  commands:
+    frontend-format:
+      root: "client"
+      glob: "**/*.{js,ts,jsx,tsx,json,css,md}"
+      run: pnpm prettier --write {staged_files}
+      stage_fixed: true
+
+    frontend-lint:
+      root: "client"
+      glob: "**/*.{js,ts,jsx,tsx}"
+      run: pnpm eslint --fix {staged_files}
+      stage_fixed: true
+
+    backend-format:
+      root: "api"
+      glob: "**/*.py"
+      run: black {staged_files}
+      stage_fixed: true
+
+    backend-check:
+      root: "api"
+      glob: "**/*.py"
+      run: docker-compose exec -T api python manage.py check
+
+commit-msg:
+  commands:
+    lint-commit:
+      run: npx commitlint --edit "$1"
+
+pre-push:
+  parallel: true
+  commands:
+    audit-frontend:
+      root: "client"
+      run: pnpm audit
+
+    audit-backend:
+      root: "api"
+      run: |
+        if [ -f "./env/Scripts/pip-audit" ]; then
+          ./env/Scripts/pip-audit
+        elif [ -f "./env/bin/pip-audit" ]; then
+          ./env/bin/pip-audit
+        else
+          pip-audit
+        fi

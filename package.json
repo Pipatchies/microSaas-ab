@@ -1,0 +1,21 @@
+{
+  "name": "microSaas-ab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "lefthook install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.7.0",
+  "devDependencies": {
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
+    "lefthook": "^2.1.1"
+  },
+  "dependencies": {
+    "next": "^16.1.6"
+  }
+}

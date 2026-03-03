@@ -1,0 +1,57 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: tastyroad_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5462:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d/
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: tastyroad_api
+    restart: always
+    ports:
+      - "${API_PORT}:8800"
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8800"
+    env_file:
+      - .env
+    volumes:
+      - ./api/src:/app
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      target: dev
+    container_name: tastyroad_frontend
+    restart: always
+    ports:
+      - "${CLIENT_PORT}:${CLIENT_PORT}"
+    env_file:
+      - ./client/.env
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - api
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - PORT=${CLIENT_PORT}
+      - HOSTNAME=0.0.0.0
+
+volumes:
+  postgres_data:

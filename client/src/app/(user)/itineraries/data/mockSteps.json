@@ -1,0 +1,110 @@
+[
+  {
+    "id_step": 101,
+    "itinerary_id": 1,
+    "name": "Grand Bassin de Castelnaudary",
+    "description": "Point de départ emblématique du canal du Midi, idéal pour s’immerger dans le Lauragais.",
+    "longitude": 1.9531,
+    "latitude": 43.3188,
+    "step_order": 1
+  },
+  {
+    "id_step": 102,
+    "itinerary_id": 1,
+    "name": "Belvédère du Lauragais",
+    "description": "Vue spectaculaire sur les collines du Lauragais et les champs de haricots.",
+    "longitude": 1.9602,
+    "latitude": 43.3065,
+    "step_order": 2
+  },
+  {
+    "id_step": 103,
+    "itinerary_id": 1,
+    "name": "Ferme du Haricot Lingot AOP",
+    "description": "Découverte du haricot lingot de Castelnaudary, ingrédient phare du cassoulet.",
+    "longitude": 1.9745,
+    "latitude": 43.3133,
+    "step_order": 3
+  },
+  {
+    "id_step": 104,
+    "itinerary_id": 1,
+    "name": "Artisan du Cassoulet – Maison Escourrou",
+    "description": "Pause gourmande : cassoulet traditionnel au confit et lingots AOP.",
+    "longitude": 1.9578,
+    "latitude": 43.3212,
+    "step_order": 4
+  },
+  {
+    "id_step": 201,
+    "itinerary_id": 2,
+    "name": "Village médiéval de Saint-Émilion",
+    "description": "Patrimoine UNESCO avec ruelles pavées et architecture en pierre blonde.",
+    "longitude": -0.155,
+    "latitude": 44.8921,
+    "step_order": 1
+  },
+  {
+    "id_step": 202,
+    "itinerary_id": 2,
+    "name": "Château Soutard",
+    "description": "Visite d’un domaine viticole prestigieux et dégustation de grands crus.",
+    "longitude": -0.1565,
+    "latitude": 44.9009,
+    "step_order": 2
+  },
+  {
+    "id_step": 203,
+    "itinerary_id": 2,
+    "name": "Route des Grands Crus",
+    "description": "Route cyclable traversant des domaines classés et paysages viticoles sublimes.",
+    "longitude": -0.162,
+    "latitude": 44.9042,
+    "step_order": 3
+  },
+  {
+    "id_step": 204,
+    "itinerary_id": 2,
+    "name": "Atelier Canelés Maison Baillardran",
+    "description": "Découverte et dégustation du célèbre canelé bordelais.",
+    "longitude": -0.1483,
+    "latitude": 44.8954,
+    "step_order": 4
+  },
+  {
+    "id_step": 301,
+    "itinerary_id": 3,
+    "name": "Col du Bonhomme",
+    "description": "Montée sinueuse avec points de vue sur la vallée alsacienne.",
+    "longitude": 7.0119,
+    "latitude": 48.165,
+    "step_order": 1
+  },
+  {
+    "id_step": 302,
+    "itinerary_id": 3,
+    "name": "Markstein – Route des Crêtes",
+    "description": "Section emblématique du massif des Vosges, très prisée des motards.",
+    "longitude": 7.0312,
+    "latitude": 47.9341,
+    "step_order": 2
+  },
+  {
+    "id_step": 303,
+    "itinerary_id": 3,
+    "name": "Ferme-Auberge du Hinteralfeld",
+    "description": "Dégustation du véritable munster fermier et repas marcaire.",
+    "longitude": 7.0153,
+    "latitude": 47.9728,
+    "step_order": 3
+  },
+  {
+    "id_step": 304,
+    "itinerary_id": 3,
+    "name": "Sommet du Hohneck",
+    "description": "Vue incroyable sur les Alpes par temps clair.",
+    "longitude": 7.0058,
+    "latitude": 48.0429,
+    "step_order": 4
+  }
+]

@@ -1,0 +1,14 @@
+name: 🚀 CD Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  #  Trigger Render Deployment
+  deploy-render:
+    name: Trigger Render
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Backend to Render
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
