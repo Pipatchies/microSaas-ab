@@ -32,4 +32,4 @@ USER appuser
 EXPOSE 8800
 
 # Start command: run migrations then start Gunicorn
-CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8800 --workers ${GUNICORN_WORKERS:-3}"]
+CMD ["sh", "-c", "python manage.py collectstatic --noinput && python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8800 --workers ${GUNICORN_WORKERS:-3}"]
