@@ -25,14 +25,11 @@ ENV SECRET_KEY=build-secret \
     ALLOWED_HOSTS="*" \
     GUNICORN_WORKERS=3
 
-# Collect static files
-# RUN python manage.py collectstatic --noinput
-
 # Permissions and port
 RUN chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8800
 
-# Start command (Gunicorn)
-CMD ["sh", "-c", "gunicorn config.wsgi:application -b 0.0.0.0:8800 -w ${GUNICORN_WORKERS}"]
+# Start command: run migrations then start Gunicorn
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8800 --workers ${GUNICORN_WORKERS:-3}"]
