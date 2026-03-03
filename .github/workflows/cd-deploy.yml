@@ -5,10 +5,15 @@ on:
     branches: [main]
 
 jobs:
-  #  Trigger Render Deployment
+  ci-checks:
+    uses: ./.github/workflows/ci-checks.yml
+
   deploy-render:
     name: Trigger Render
+    needs: [ci-checks]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Backend to Render
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          echo "Appel du Deploy Hook Render..."
+          curl -X POST -f "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"

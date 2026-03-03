@@ -2,9 +2,10 @@ name: 🛡️ CI Checks
 
 on:
   push:
-    branches: [main, develop, "feature/*"]
+    branches: [develop, "feature/*"]
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_call:
 
 jobs:
   backend-checks:
