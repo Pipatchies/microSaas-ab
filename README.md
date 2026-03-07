@@ -55,15 +55,15 @@ L'application est déployée et accessible via les liens suivants :
 
 ## 🧱 Stack technique
 
-| Composant           | Technologies                                                                                               |
-| ------------------- | ---------------------------------------------------------------------------------------------------------- |
-| 💻 Frontend         | **Next.js 16**, **React 19**, **TypeScript**, **Tailwind CSS 4**, **Mapbox**                               |
-| ⚙️ Backend          | **Django 6**, **Django REST Framework**                                                                    |
-| 🗃️ Base de données  | **PostgreSQL 16**                                                                                          |
-| 🔐 Authentification | **Authlib**                                                                                                |
-| 🐳 Conteneurisation | **Docker Compose v2**                                                                                      |
-| 🧰 CI/CD            | **GitHub Actions**                                                                                         |
-| � Serveurs de Prod  | **Gunicorn**, **Whitenoise**                                                                               |
+| Composant           | Technologies                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| 💻 Frontend         | **Next.js 16**, **React 19**, **TypeScript**, **Tailwind CSS 4**, **Mapbox**                                  |
+| ⚙️ Backend          | **Django 6**, **Django REST Framework**                                                                       |
+| 🗃️ Base de données  | **PostgreSQL 16**                                                                                             |
+| 🔐 Authentification | **Authlib**                                                                                                   |
+| 🐳 Conteneurisation | **Docker Compose v2**                                                                                         |
+| 🧰 CI/CD            | **GitHub Actions**                                                                                            |
+| � Serveurs de Prod  | **Gunicorn**, **Whitenoise**                                                                                  |
 | 🧪 Tests & Qualité  | **Pytest**, **Pylint**, **Black**, **pip-audit** _(Back)_ <br> **Vitest**, **ESLint**, **Prettier** _(Front)_ |
 
 ---
@@ -125,7 +125,13 @@ L'application sera alors accessible aux URLs suivantes :
 - **Frontend** → http://localhost:3300
 - **API Backend** → http://localhost:8800
 
-4. Stopper et réinitialiser les conteneurs :
+4. (Optionnel) Charger des données de test (Fixtures) :
+
+```bash
+docker compose exec api python manage.py loaddata seed_places seed_itineraries seed_steps
+```
+
+5. Stopper et réinitialiser les conteneurs :
 
 ```bash
 docker compose down
@@ -145,6 +151,8 @@ pip install -r requirements.txt
 cd src
 python manage.py makemigrations
 python manage.py migrate
+# (Optionnel) Charger des données de test :
+python manage.py loaddata seed_places seed_itineraries seed_steps
 python manage.py runserver 8800
 ```
 
