@@ -22,7 +22,7 @@ pre-commit:
     backend-format:
       root: "api"
       glob: "**/*.py"
-      run: black {staged_files}
+      run: if [ -f "./env/Scripts/black.exe" ]; then ./env/Scripts/black.exe {staged_files}; else ./env/bin/black {staged_files}; fi
       stage_fixed: true
 
     backend-check:
@@ -33,7 +33,7 @@ pre-commit:
     backend-lint:
       root: "api"
       glob: "**/*.py"
-      run: flake8 {staged_files} && pylint {staged_files} --disable=all --enable=E,F
+      run: if [ -f "./env/Scripts/flake8.exe" ]; then ./env/Scripts/flake8.exe {staged_files} && ./env/Scripts/pylint.exe {staged_files} --disable=all --enable=E,F; else ./env/bin/flake8 {staged_files} && ./env/bin/pylint {staged_files} --disable=all --enable=E,F; fi
 
 commit-msg:
   commands:

@@ -10,5 +10,8 @@ class FoodPlace(models.Model):
     description = models.TextField(blank=True)
     mapbox_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
 
+    class Meta:
+        ordering = ["id_foodplace"]
+
     def __str__(self):
         return self.name

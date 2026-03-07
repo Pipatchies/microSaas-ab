@@ -47,10 +47,11 @@ class TestFoodPlaceViews:
     """Tests d'intégration pour /api/places/."""
 
     def test_list_food_places_empty(self, client):
-        """GET /api/places/ retourne 200 et une liste vide."""
+        """GET /api/places/ retourne 200 et une liste vide (paginée)."""
         response = client.get("/api/places/")
         assert response.status_code == status.HTTP_200_OK
-        assert isinstance(response.data, list)
+        assert "results" in response.data
+        assert isinstance(response.data["results"], list)
 
     def test_create_food_place_valid(self, client):
         """POST /api/places/ avec payload valide retourne 201."""
@@ -138,10 +139,11 @@ class TestItineraryViews:
         return data
 
     def test_list_itineraries(self, client, itinerary):
-        """GET /api/itineraries/ retourne 200 avec la liste."""
+        """GET /api/itineraries/ retourne 200 avec la liste (paginée)."""
         response = client.get("/api/itineraries/")
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) >= 1
+        assert "results" in response.data
+        assert len(response.data["results"]) >= 1
 
     def test_create_itinerary_valid(self, client):
         """POST /api/itineraries/ avec payload complet retourne 201."""
