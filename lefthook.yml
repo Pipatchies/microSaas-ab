@@ -30,6 +30,11 @@ pre-commit:
       glob: "**/*.py"
       run: docker-compose exec -T api python manage.py check
 
+    backend-lint:
+      root: "api"
+      glob: "**/*.py"
+      run: flake8 {staged_files} && pylint {staged_files} --disable=all --enable=E,F
+
 commit-msg:
   commands:
     lint-commit:
