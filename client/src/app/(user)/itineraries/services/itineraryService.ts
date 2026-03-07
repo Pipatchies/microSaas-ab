@@ -45,7 +45,9 @@ const realApi = {
         throw new Error(`Failed to fetch itineraries: ${response.status}`);
       }
       const data = await response.json();
-      return data.map(mapBackendToFrontend);
+      // L'API est désormais paginée, les données sont dans 'results'
+      const items = data.results || data;
+      return items.map(mapBackendToFrontend);
     } catch (error) {
       console.error("Error fetching itineraries:", error);
       throw error;
