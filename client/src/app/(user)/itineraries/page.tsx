@@ -1,20 +1,20 @@
-"use client";
-
 import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
 import Typography from "@/components/typography";
-import { ItineraryList } from "../../../components/itinerary-list";
+import { ItineraryList } from "@/components/itinerary-list";
 import { CtaButton } from "@/components/cta-button";
 import Link from "next/link";
 
-function FilteredItineraryList() {
-  const searchParams = useSearchParams();
-  const typeParam = searchParams.get("type");
-
-  return <ItineraryList selectedType={typeParam} />;
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export default function ItinerariesPage() {
+export default async function ItinerariesPage({ searchParams }: PageProps) {
+  const resolvedSearchParams = await searchParams;
+  const typeParam =
+    typeof resolvedSearchParams.type === "string"
+      ? resolvedSearchParams.type
+      : null;
+
   return (
     <div className="container mx-auto pt-8 pb-32 px-4 md:px-0">
       <section className="mb-4">
@@ -26,7 +26,7 @@ export default function ItinerariesPage() {
         <Suspense
           fallback={<div className="p-4 text-center">Chargement...</div>}
         >
-          <FilteredItineraryList />
+          <ItineraryList selectedType={typeParam} />
         </Suspense>
       </section>
 

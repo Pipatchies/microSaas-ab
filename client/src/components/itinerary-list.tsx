@@ -1,46 +1,22 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { itineraryService } from "../app/(user)/itineraries/services/itineraryService";
+import { itineraryService } from "@/services/itineraryService";
 import type { Itinerary } from "@/types/itinerary";
-import { ItineraryCard } from "./itinerary-card";
+import { ItineraryCardClient } from "./itinerary-card-client";
 
 interface ItineraryListProps {
   selectedType?: string | null;
 }
 
-export function ItineraryList({ selectedType }: ItineraryListProps) {
-  const [itineraries, setItineraries] = useState<Itinerary[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchItineraries = async () => {
-      try {
-        const data = await itineraryService.getAll();
-        setItineraries(data);
-      } catch (error) {
-        console.error("Failed to fetch itineraries:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchItineraries();
-  }, []);
-
-  const handleDelete = async (id: number) => {
-    try {
-      await itineraryService.delete(id);
-      setItineraries((prev) =>
-        prev.filter((itinerary) => itinerary.id_itinerary !== id),
-      );
-    } catch (error) {
-      console.error("Failed to delete itinerary:", error);
-    }
-  };
-
-  if (loading) {
-    return <div className="p-4 text-center">Chargement...</div>;
+export async function ItineraryList({ selectedType }: ItineraryListProps) {
+  let itineraries: Itinerary[] = [];
+  try {
+    itineraries = await itineraryService.getTopRated();
+  } catch (error) {
+    console.error("Failed to fetch itineraries:", error);
+    return (
+      <div className="p-4 text-center text-red-500">
+        Erreur lors du chargement des itinéraires.
+      </div>
+    );
   }
 
   const filteredItineraries = selectedType
@@ -54,10 +30,9 @@ export function ItineraryList({ selectedType }: ItineraryListProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {filteredItineraries.map((itinerary) => (
-        <ItineraryCard
+        <ItineraryCardClient
           key={itinerary.id_itinerary}
           itinerary={itinerary}
-          onDelete={handleDelete}
         />
       ))}
     </div>
