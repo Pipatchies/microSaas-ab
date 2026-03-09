@@ -18,6 +18,17 @@ export function ItineraryCard({ itinerary, onDelete }: ItineraryCardProps) {
   const imageUrl =
     "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=1000";
 
+  // Format duration: 1.75 → "1h45", 2.0 → "2h00"
+  const formatDuration = (hours: any) => {
+    const num = typeof hours === "string" ? parseFloat(hours) : Number(hours);
+    if (isNaN(num)) return "0h00";
+    if (num === 0) return "0h00";
+    const h = Math.floor(num);
+    const m = Math.round((num - h) * 60);
+    if (h === 0 && m === 0 && num > 0) return "< 1m";
+    return m > 0 ? `${h}h${String(m).padStart(2, "0")}` : `${h}h00`;
+  };
+
   return (
     <Card className="overflow-hidden relative border-none shadow-xl group rounded-lg h-[280px] sm:h-[350px] flex flex-col justify-end py-4">
       {/* Background Image Section */}
@@ -112,13 +123,13 @@ export function ItineraryCard({ itinerary, onDelete }: ItineraryCardProps) {
             </div>
             <div className="flex flex-col items-center">
               <span className="font-bold text-lg text-secondary leading-none">
-                {itinerary.duration}
+                {formatDuration(itinerary.duration)}
               </span>
-              <span className="text-xs mt-1">heures</span>
+              <span className="text-xs mt-1">durée</span>
             </div>
             <div className="flex flex-col items-center">
               <span className="font-bold text-lg text-secondary leading-none">
-                10
+                {itinerary.steps?.length ?? 0}
               </span>
               <span className="text-xs mt-1">étapes</span>
             </div>

@@ -9,6 +9,7 @@ export type Itinerary = {
   diet: string;
   speciality: string;
   facts?: string;
+  steps?: Step[];
 };
 
 export type FoodPlace = {
