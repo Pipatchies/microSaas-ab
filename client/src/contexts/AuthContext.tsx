@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshUser = async () => {
     try {
-      const userData = await authService.getMe();
+      const userData = (await authService.getMe()) as User | null;
       setUser(userData);
     } catch (error) {
       setUser(null);
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     await authService.logout();
     setUser(null);
-    router.push("/");
+    router.push("/login"); // Fixed to /login per user issue
   };
 
   return (

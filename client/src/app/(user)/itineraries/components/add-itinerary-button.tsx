@@ -9,7 +9,7 @@ export function AddItineraryButton() {
 
   return (
     <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 w-max flex justify-center">
-      <Link href={isAuthenticated ? "/itineraries/create" : "/register"}>
+      <Link href={isAuthenticated ? "/itineraries/create" : "/login"}>
         <CtaButton text="Ajouter un itinéraire" ctaVariant="solid" />
       </Link>
     </div>

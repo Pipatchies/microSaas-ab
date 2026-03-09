@@ -10,7 +10,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push("/register");
+      router.push("/login");
     }
   }, [isAuthenticated, isLoading, router]);
 
