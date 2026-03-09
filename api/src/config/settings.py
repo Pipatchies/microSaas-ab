@@ -58,17 +58,27 @@ INSTALLED_APPS = [
     "drf_spectacular",
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True  # In production, specify allowed origins
+CORS_ALLOW_CREDENTIALS = True
+
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "users.authentication.JWTAuthenticationFromCookie",
     ),
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
 }
+
+# JWT Cookie Settings
+JWT_AUTH_COOKIE = "access_token"
+JWT_AUTH_REFRESH_COOKIE = "refresh_token"
+JWT_AUTH_SAMESITE = "Lax"
+JWT_AUTH_SECURE = False  # Set to True in production (HTTPS)
+JWT_AUTH_HTTPONLY = True
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
