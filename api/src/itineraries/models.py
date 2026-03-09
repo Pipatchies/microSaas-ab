@@ -1,4 +1,8 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class Itinerary(models.Model):
@@ -46,3 +50,24 @@ class Step(models.Model):
 
     def __str__(self):
         return f"{self.itinerary.title} - Step {self.step_order}: {self.name}"
+
+
+class Comment(models.Model):
+    id_comment = models.AutoField(primary_key=True)
+    itinerary = models.ForeignKey(
+        Itinerary, on_delete=models.CASCADE, related_name="comments"
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="comments"
+    )
+    review = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    content = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Comment {self.review}/5 for {self.itinerary.title}"
