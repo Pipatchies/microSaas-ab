@@ -16,6 +16,24 @@ def client():
 
 
 @pytest.fixture
+def auth_client(db):
+    """Client API authentifié avec un utilisateur de test."""
+    from django.contrib.auth import get_user_model
+
+    User = get_user_model()
+    user = User.objects.create_user(
+        username="testuser@test.com", email="testuser@test.com", password="password123"
+    )
+    client = APIClient()
+    # On récupère le token
+    from rest_framework_simplejwt.tokens import RefreshToken
+
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+    return client
+
+
+@pytest.fixture
 def itinerary(db):
     return Itinerary.objects.create(
         title="Itinéraire Fixture",
@@ -53,7 +71,12 @@ class TestFoodPlaceViews:
         assert "results" in response.data
         assert isinstance(response.data["results"], list)
 
-    def test_create_food_place_valid(self, client):
+    def test_create_food_place_unauthenticated_returns_401(self, client):
+        """POST /api/places/ sans token retourne 401."""
+        response = client.post("/api/places/", data={}, format="json")
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_create_food_place_valid(self, auth_client):
         """POST /api/places/ avec payload valide retourne 201."""
         payload = {
             "name": "Café des Artistes",
@@ -61,25 +84,25 @@ class TestFoodPlaceViews:
             "latitude": 48.8566,
             "type": "Café",
         }
-        response = client.post("/api/places/", data=payload, format="json")
+        response = auth_client.post("/api/places/", data=payload, format="json")
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data["name"] == "Café des Artistes"
         assert FoodPlace.objects.filter(name="Café des Artistes").exists()
 
-    def test_create_food_place_missing_name_returns_400(self, client):
+    def test_create_food_place_missing_name_returns_400(self, auth_client):
         """POST /api/places/ sans 'name' retourne 400, pas de crash serveur."""
         payload = {
             "longitude": 2.3522,
             "latitude": 48.8566,
         }
-        response = client.post("/api/places/", data=payload, format="json")
+        response = auth_client.post("/api/places/", data=payload, format="json")
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert "name" in response.data
 
-    def test_create_food_place_missing_coordinates_returns_400(self, client):
+    def test_create_food_place_missing_coordinates_returns_400(self, auth_client):
         """POST /api/places/ sans longitude/latitude retourne 400."""
         payload = {"name": "Lieu Incomplet"}
-        response = client.post("/api/places/", data=payload, format="json")
+        response = auth_client.post("/api/places/", data=payload, format="json")
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_retrieve_food_place(self, client, food_place):
@@ -93,14 +116,14 @@ class TestFoodPlaceViews:
         response = client.get("/api/places/9999/")
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_update_food_place(self, client, food_place):
+    def test_update_food_place(self, auth_client, food_place):
         """PUT /api/places/{id}/ met à jour le lieu."""
         payload = {
             "name": "La Guinguette Rénovée",
             "longitude": food_place.longitude,
             "latitude": food_place.latitude,
         }
-        response = client.put(
+        response = auth_client.put(
             f"/api/places/{food_place.id_foodplace}/",
             data=payload,
             format="json",
@@ -109,9 +132,9 @@ class TestFoodPlaceViews:
         food_place.refresh_from_db()
         assert food_place.name == "La Guinguette Rénovée"
 
-    def test_delete_food_place(self, client, food_place):
+    def test_delete_food_place(self, auth_client, food_place):
         """DELETE /api/places/{id}/ supprime le lieu et retourne 204."""
-        response = client.delete(f"/api/places/{food_place.id_foodplace}/")
+        response = auth_client.delete(f"/api/places/{food_place.id_foodplace}/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert not FoodPlace.objects.filter(pk=food_place.id_foodplace).exists()
 
@@ -145,19 +168,19 @@ class TestItineraryViews:
         assert "results" in response.data
         assert len(response.data["results"]) >= 1
 
-    def test_create_itinerary_valid(self, client):
+    def test_create_itinerary_valid(self, auth_client):
         """POST /api/itineraries/ avec payload complet retourne 201."""
-        response = client.post(
+        response = auth_client.post(
             "/api/itineraries/", data=self._valid_payload(), format="json"
         )
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data["title"] == "Nantes Food Tour"
 
-    def test_create_itinerary_missing_title_returns_400(self, client):
+    def test_create_itinerary_missing_title_returns_400(self, auth_client):
         """POST /api/itineraries/ sans 'title' retourne 400."""
         data = self._valid_payload()
         del data["title"]
-        response = client.post("/api/itineraries/", data=data, format="json")
+        response = auth_client.post("/api/itineraries/", data=data, format="json")
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert "title" in response.data
 
@@ -168,9 +191,9 @@ class TestItineraryViews:
         assert "steps" in response.data
         assert isinstance(response.data["steps"], list)
 
-    def test_delete_itinerary(self, client, itinerary):
+    def test_delete_itinerary(self, auth_client, itinerary):
         """DELETE /api/itineraries/{id}/ retourne 204."""
-        response = client.delete(f"/api/itineraries/{itinerary.pk}/")
+        response = auth_client.delete(f"/api/itineraries/{itinerary.pk}/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
@@ -181,7 +204,7 @@ class TestItineraryViews:
 class TestStepViews:
     """Tests d'intégration pour /api/steps/."""
 
-    def test_create_step_valid(self, client, itinerary):
+    def test_create_step_valid(self, auth_client, itinerary):
         """POST /api/steps/ avec payload valide retourne 201."""
         payload = {
             "itinerary": itinerary.pk,
@@ -190,11 +213,11 @@ class TestStepViews:
             "latitude": 45.7577,
             "step_order": 1,
         }
-        response = client.post("/api/steps/", data=payload, format="json")
+        response = auth_client.post("/api/steps/", data=payload, format="json")
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data["name"] == "Place Bellecour"
 
-    def test_create_step_missing_name_returns_400(self, client, itinerary):
+    def test_create_step_missing_name_returns_400(self, auth_client, itinerary):
         """POST /api/steps/ sans 'name' retourne 400 – l'API ne crache pas."""
         payload = {
             "itinerary": itinerary.pk,
@@ -202,11 +225,11 @@ class TestStepViews:
             "latitude": 45.7577,
             "step_order": 1,
         }
-        response = client.post("/api/steps/", data=payload, format="json")
+        response = auth_client.post("/api/steps/", data=payload, format="json")
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert "name" in response.data
 
-    def test_create_step_invalid_picture_url_returns_400(self, client, itinerary):
+    def test_create_step_invalid_picture_url_returns_400(self, auth_client, itinerary):
         """POST /api/steps/ avec une URL 'picture' invalide retourne 400."""
         payload = {
             "itinerary": itinerary.pk,
@@ -216,11 +239,11 @@ class TestStepViews:
             "step_order": 1,
             "picture": "pas-une-url",
         }
-        response = client.post("/api/steps/", data=payload, format="json")
+        response = auth_client.post("/api/steps/", data=payload, format="json")
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert "picture" in response.data
 
-    def test_create_step_linked_to_food_place(self, client, itinerary, food_place):
+    def test_create_step_linked_to_food_place(self, auth_client, itinerary, food_place):
         """POST /api/steps/ avec food_place valide retourne 201 et lie le lieu."""
         payload = {
             "itinerary": itinerary.pk,
@@ -230,7 +253,7 @@ class TestStepViews:
             "step_order": 1,
             "food_place": food_place.id_foodplace,
         }
-        response = client.post("/api/steps/", data=payload, format="json")
+        response = auth_client.post("/api/steps/", data=payload, format="json")
         assert response.status_code == status.HTTP_201_CREATED
         assert response.data["food_place"] == food_place.id_foodplace
 
