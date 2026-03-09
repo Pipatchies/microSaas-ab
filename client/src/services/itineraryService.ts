@@ -6,6 +6,9 @@ const mockApi = {
   async getAll(): Promise<Itinerary[]> {
     return [];
   },
+  async getTopRated(): Promise<Itinerary[]> {
+    return [];
+  },
   async create(itinerary: Omit<Itinerary, "id_itinerary">): Promise<Itinerary> {
     return {
       id_itinerary: Date.now(),
@@ -45,11 +48,29 @@ const realApi = {
         throw new Error(`Failed to fetch itineraries: ${response.status}`);
       }
       const data = await response.json();
-      // L'API est désormais paginée, les données sont dans 'results'
       const items = data.results || data;
       return items.map(mapBackendToFrontend);
     } catch (error) {
       console.error("Error fetching itineraries:", error);
+      throw error;
+    }
+  },
+
+  async getTopRated(): Promise<Itinerary[]> {
+    try {
+      const response = await fetch(
+        `${getBaseUrl()}/api/itineraries/?ordering=-average_rating`,
+      );
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch top rated itineraries: ${response.status}`,
+        );
+      }
+      const data = await response.json();
+      const items = data.results || data;
+      return items.map(mapBackendToFrontend);
+    } catch (error) {
+      console.error("Error fetching top rated itineraries:", error);
       throw error;
     }
   },

@@ -14,8 +14,8 @@ import StepDrawer, {
   StepDrawerData,
 } from "@/app/(user)/itineraries/components/step-drawer";
 import { getDirections } from "@/services/mapboxService";
-import { itineraryService } from "../services/itineraryService";
-import { stepService } from "../services/stepService";
+import { itineraryService } from "@/services/itineraryService";
+import { stepService } from "@/services/stepService";
 import { MapboxRoute } from "@/services/mapboxService";
 
 export const itineraryFormSchema = z.object({
@@ -149,7 +149,7 @@ export default function ItineraryForm() {
 
           // 1. If step has a foodplace linked, create it first
           if (wp.foodplace) {
-            const newFp = await import("../services/foodPlaceService").then(
+            const newFp = await import("@/services/foodPlaceService").then(
               (m) =>
                 m.foodPlaceService.create({
                   name: wp.foodplace!.name,
