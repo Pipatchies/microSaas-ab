@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "places",
     "corsheaders",
     "rest_framework",
+    "django_filters",
     "drf_spectacular",
 ]
 
