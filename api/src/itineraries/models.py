@@ -6,6 +6,7 @@ User = get_user_model()
 
 
 class Itinerary(models.Model):
+    id_itinerary = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     type = models.CharField(max_length=50)
     zone = models.CharField(max_length=50)
@@ -28,7 +29,7 @@ class Itinerary(models.Model):
 
     class Meta:
         verbose_name_plural = "Itineraries"
-        ordering = ["id"]
+        ordering = ["id_itinerary"]
 
     def __str__(self):
         return f"{self.title} ({self.type})"

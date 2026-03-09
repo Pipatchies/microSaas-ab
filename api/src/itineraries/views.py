@@ -19,8 +19,8 @@ class ItineraryViewSet(viewsets.ModelViewSet):
     # Enable searching across these fields
     search_fields = ["title", "speciality", "facts"]
     # Enable ordering by these fields (including the new annotated field)
-    ordering_fields = ["id", "distance", "duration", "average_rating"]
-    ordering = ["id"]  # Default ordering
+    ordering_fields = ["id_itinerary", "distance", "duration", "average_rating"]
+    ordering = ["id_itinerary"]  # Default ordering
 
     def get_queryset(self):
         """
