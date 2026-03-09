@@ -28,7 +28,7 @@ pre-commit:
     backend-lint:
       root: "api"
       glob: "**/*.py"
-      run: if [ -f "./env/Scripts/ruff.exe" ]; then ./env/Scripts/ruff.exe check {staged_files}; else ./env/bin/ruff check {staged_files}; fi
+      run: if [ -f "./env/Scripts/ruff.exe" ]; then ./env/Scripts/ruff.exe check --fix {staged_files}; else ./env/bin/ruff check --fix {staged_files}; fi
 
 commit-msg:
   commands:
