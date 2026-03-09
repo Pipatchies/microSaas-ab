@@ -8,6 +8,7 @@ database configuration, and static files settings.
 
 import sys
 from pathlib import Path
+from datetime import timedelta
 import environ
 import dj_database_url
 
@@ -49,8 +50,10 @@ INSTALLED_APPS = [
     "core",
     "itineraries",
     "places",
+    "users",
     "corsheaders",
     "rest_framework",
+    "rest_framework_simplejwt",
     "django_filters",
     "drf_spectacular",
 ]
@@ -59,6 +62,16 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "SIGNING_KEY": env("JWT_SECRET_KEY", default=SECRET_KEY),
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 SPECTACULAR_SETTINGS = {
