@@ -59,7 +59,11 @@ export function ItineraryCard({ itinerary, onDelete }: ItineraryCardProps) {
             className="bg-accent text-foreground hover:bg-accent/90 text-sm px-3 py-1 font-semibold rounded-full shadow-sm flex items-center gap-1"
           >
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            <span>4.8</span>
+            <span>
+              {itinerary.average_rating
+                ? Number(itinerary.average_rating).toFixed(1)
+                : "N/A"}
+            </span>
           </Badge>
 
           {/* Delete Button (Visible on hover) */}
