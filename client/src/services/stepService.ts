@@ -46,6 +46,7 @@ const realApi = {
     try {
       const response = await fetch(
         `${getBaseUrl()}/api/steps/?itinerary=${itineraryId}`,
+        { credentials: "include" },
       );
       if (!response.ok) {
         throw new Error(`Failed to fetch steps: ${response.status}`);
@@ -64,7 +65,9 @@ const realApi = {
 
   async getAll(): Promise<Step[]> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/steps/`);
+      const response = await fetch(`${getBaseUrl()}/api/steps/`, {
+        credentials: "include",
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch steps: ${response.status}`);
       }
@@ -100,6 +103,7 @@ const realApi = {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -120,6 +124,7 @@ const realApi = {
     try {
       const response = await fetch(`${getBaseUrl()}/api/steps/${id}/`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       if (!response.ok && response.status !== 204) {

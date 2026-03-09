@@ -43,7 +43,9 @@ const mapBackendToFrontend = (data: any): Itinerary => {
 const realApi = {
   async getAll(): Promise<Itinerary[]> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/itineraries/`);
+      const response = await fetch(`${getBaseUrl()}/api/itineraries/`, {
+        credentials: "include",
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch itineraries: ${response.status}`);
       }
@@ -60,6 +62,7 @@ const realApi = {
     try {
       const response = await fetch(
         `${getBaseUrl()}/api/itineraries/?ordering=-average_rating`,
+        { credentials: "include" },
       );
       if (!response.ok) {
         throw new Error(
@@ -83,6 +86,7 @@ const realApi = {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(itinerary),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -103,6 +107,7 @@ const realApi = {
     try {
       const response = await fetch(`${getBaseUrl()}/api/itineraries/${id}/`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       if (!response.ok && response.status !== 204) {

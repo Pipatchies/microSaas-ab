@@ -43,7 +43,9 @@ const mapBackendToFrontend = (data: any): FoodPlace => {
 const realApi = {
   async getAll(): Promise<FoodPlace[]> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/places/`);
+      const response = await fetch(`${getBaseUrl()}/api/places/`, {
+        credentials: "include",
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch food places: ${response.status}`);
       }
@@ -57,7 +59,9 @@ const realApi = {
 
   async getById(id: number): Promise<FoodPlace | null> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/places/${id}/`);
+      const response = await fetch(`${getBaseUrl()}/api/places/${id}/`, {
+        credentials: "include",
+      });
       if (!response.ok) {
         if (response.status === 404) return null;
         throw new Error(`Failed to fetch food place: ${response.status}`);
@@ -78,6 +82,7 @@ const realApi = {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(place),
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -98,6 +103,7 @@ const realApi = {
     try {
       const response = await fetch(`${getBaseUrl()}/api/places/${id}/`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       if (!response.ok && response.status !== 204) {
