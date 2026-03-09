@@ -7,7 +7,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("itineraries", "0003_alter_step_description_alter_step_picture"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),

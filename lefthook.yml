@@ -22,18 +22,13 @@ pre-commit:
     backend-format:
       root: "api"
       glob: "**/*.py"
-      run: if [ -f "./env/Scripts/black.exe" ]; then ./env/Scripts/black.exe {staged_files}; else ./env/bin/black {staged_files}; fi
+      run: if [ -f "./env/Scripts/ruff.exe" ]; then ./env/Scripts/ruff.exe format {staged_files}; else ./env/bin/ruff format {staged_files}; fi
       stage_fixed: true
-
-    backend-check:
-      root: "api"
-      glob: "**/*.py"
-      run: docker-compose exec -T api python manage.py check
 
     backend-lint:
       root: "api"
       glob: "**/*.py"
-      run: if [ -f "./env/Scripts/flake8.exe" ]; then ./env/Scripts/flake8.exe {staged_files} && ./env/Scripts/pylint.exe {staged_files} --disable=all --enable=E,F; else ./env/bin/flake8 {staged_files} && ./env/bin/pylint {staged_files} --disable=all --enable=E,F; fi
+      run: if [ -f "./env/Scripts/ruff.exe" ]; then ./env/Scripts/ruff.exe check {staged_files}; else ./env/bin/ruff check {staged_files}; fi
 
 commit-msg:
   commands:
