@@ -1,4 +1,5 @@
 import type { FoodPlace } from "@/types/itinerary";
+import { apiClient } from "@/lib/apiClient";
 
 const USE_MOCK = false;
 
@@ -23,15 +24,6 @@ const mockApi = {
   },
 };
 
-const getBaseUrl = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL;
-  if (!url)
-    throw new Error(
-      "NEXT_PUBLIC_API_URL is not defined in environment variables",
-    );
-  return url;
-};
-
 // Map backend 'id' and 'foodplace' to frontend 'id_foodplace'
 const mapBackendToFrontend = (data: any): FoodPlace => {
   return {
@@ -43,13 +35,7 @@ const mapBackendToFrontend = (data: any): FoodPlace => {
 const realApi = {
   async getAll(): Promise<FoodPlace[]> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/places/`, {
-        credentials: "include",
-      });
-      if (!response.ok) {
-        throw new Error(`Failed to fetch food places: ${response.status}`);
-      }
-      const data = await response.json();
+      const data: any = await apiClient.get("/api/places/");
       return data.map(mapBackendToFrontend);
     } catch (error) {
       console.error("Error fetching food places:", error);
@@ -59,16 +45,10 @@ const realApi = {
 
   async getById(id: number): Promise<FoodPlace | null> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/places/${id}/`, {
-        credentials: "include",
-      });
-      if (!response.ok) {
-        if (response.status === 404) return null;
-        throw new Error(`Failed to fetch food place: ${response.status}`);
-      }
-      const data = await response.json();
+      const data = await apiClient.get<any>(`/api/places/${id}/`);
       return mapBackendToFrontend(data);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.status === 404) return null;
       console.error(`Error fetching food place ${id}:`, error);
       throw error;
     }
@@ -76,40 +56,20 @@ const realApi = {
 
   async create(place: Omit<FoodPlace, "id_foodplace">): Promise<FoodPlace> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/places/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(place),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        console.error("Backend validation error:", errorData);
-        throw new Error(`Failed to create food place: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await apiClient.post<any>("/api/places/", place);
       return mapBackendToFrontend(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating food place:", error);
+      if (error.data) {
+        console.error("Backend validation error:", error.data);
+      }
       throw error;
     }
   },
 
   async delete(id: number): Promise<{ success: boolean; deletedId: number }> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/places/${id}/`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      if (!response.ok && response.status !== 204) {
-        throw new Error(`Failed to delete food place: ${response.status}`);
-      }
-
+      await apiClient.delete(`/api/places/${id}/`);
       return {
         success: true,
         deletedId: id,

@@ -1,4 +1,5 @@
 import type { Itinerary } from "@/types/itinerary";
+import { apiClient } from "@/lib/apiClient";
 
 const USE_MOCK = false;
 
@@ -23,15 +24,6 @@ const mockApi = {
   },
 };
 
-const getBaseUrl = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL;
-  if (!url)
-    throw new Error(
-      "NEXT_PUBLIC_API_URL is not defined in environment variables",
-    );
-  return url;
-};
-
 // Map backend 'id' to frontend 'id_itinerary' expectation
 const mapBackendToFrontend = (data: any): Itinerary => {
   return {
@@ -43,13 +35,7 @@ const mapBackendToFrontend = (data: any): Itinerary => {
 const realApi = {
   async getAll(): Promise<Itinerary[]> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/itineraries/`, {
-        credentials: "include",
-      });
-      if (!response.ok) {
-        throw new Error(`Failed to fetch itineraries: ${response.status}`);
-      }
-      const data = await response.json();
+      const data: any = await apiClient.get("/api/itineraries/");
       const items = data.results || data;
       return items.map(mapBackendToFrontend);
     } catch (error) {
@@ -60,16 +46,9 @@ const realApi = {
 
   async getTopRated(): Promise<Itinerary[]> {
     try {
-      const response = await fetch(
-        `${getBaseUrl()}/api/itineraries/?ordering=-average_rating`,
-        { credentials: "include" },
-      );
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch top rated itineraries: ${response.status}`,
-        );
-      }
-      const data = await response.json();
+      const data: any = await apiClient.get("/api/itineraries/", {
+        ordering: "-average_rating",
+      });
       const items = data.results || data;
       return items.map(mapBackendToFrontend);
     } catch (error) {
@@ -80,40 +59,20 @@ const realApi = {
 
   async create(itinerary: Omit<Itinerary, "id_itinerary">): Promise<Itinerary> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/itineraries/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(itinerary),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        console.error("Backend validation error:", errorData);
-        throw new Error(`Failed to create itinerary: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = await apiClient.post<any>("/api/itineraries/", itinerary);
       return mapBackendToFrontend(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating itinerary:", error);
+      if (error.data) {
+        console.error("Backend validation error:", error.data);
+      }
       throw error;
     }
   },
 
   async delete(id: number): Promise<{ success: boolean; deletedId: number }> {
     try {
-      const response = await fetch(`${getBaseUrl()}/api/itineraries/${id}/`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      if (!response.ok && response.status !== 204) {
-        throw new Error(`Failed to delete itinerary: ${response.status}`);
-      }
-
+      await apiClient.delete(`/api/itineraries/${id}/`);
       return {
         success: true,
         deletedId: id,
