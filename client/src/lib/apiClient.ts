@@ -10,11 +10,12 @@ const getBaseUrl = () => {
 
 interface FetchOptions extends RequestInit {
   params?: Record<string, string>;
+  _retry?: boolean;
 }
 
 export const apiClient = {
   async request<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
-    const { params, ...init } = options;
+    const { params, _retry, ...init } = options;
 
     let url = `${getBaseUrl()}${endpoint}`;
     if (params) {
@@ -32,8 +33,33 @@ export const apiClient = {
     });
 
     if (!response.ok) {
-      if (response.status === 401) {
-        throw new Error("Unauthorized");
+      // Logic for Refresh Token Handling
+      if (response.status === 401 && !_retry) {
+        options._retry = true;
+
+        try {
+          // Attempt to refresh token
+          const refreshResponse = await fetch(
+            `${getBaseUrl()}/api/auth/token/refresh/`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            },
+          );
+
+          if (refreshResponse.ok) {
+            // Retry original request automatically
+            return this.request<T>(endpoint, options);
+          } else {
+            console.error("Refresh token failed or expired");
+            // If we fail to refresh, the user is effectively logged out
+          }
+        } catch (refreshError) {
+          console.error("Refresh token network error", refreshError);
+        }
       }
 
       const errorData = await response.json().catch(() => null);
