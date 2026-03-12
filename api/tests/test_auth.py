@@ -2,6 +2,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.test import APIClient
+from django.conf import settings
 
 User = get_user_model()
 
@@ -19,8 +20,8 @@ class TestAuthentication:
         response = api_client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_201_CREATED
-        assert "access" in response.data
-        assert "refresh" in response.data
+        assert settings.JWT_AUTH_COOKIE in response.cookies
+        assert settings.JWT_AUTH_REFRESH_COOKIE in response.cookies
         assert User.objects.filter(email="newuser@example.com").exists()
 
     def test_register_duplicate_email(self, api_client):
@@ -49,8 +50,8 @@ class TestAuthentication:
         response = api_client.post(url, data, format="json")
 
         assert response.status_code == status.HTTP_200_OK
-        assert "access" in response.data
-        assert "refresh" in response.data
+        assert settings.JWT_AUTH_COOKIE in response.cookies
+        assert settings.JWT_AUTH_REFRESH_COOKIE in response.cookies
 
     def test_login_invalid_credentials(self, api_client):
         User.objects.create_user(
@@ -88,7 +89,8 @@ class TestAuthentication:
             {"email": "auth@example.com", "password": "password123"},
             format="json",
         )
-        token = login_res.data["access"]
+        assert settings.JWT_AUTH_COOKIE in login_res.cookies
+        token = login_res.cookies[settings.JWT_AUTH_COOKIE].value
 
         api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
