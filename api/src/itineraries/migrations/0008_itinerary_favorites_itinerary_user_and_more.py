@@ -47,14 +47,14 @@ class Migration(migrations.Migration):
             model_name="itinerary",
             name="distance",
             field=models.DecimalField(
-                decimal_places=2, help_text="Distance en km", max_digits=5
+                decimal_places=2, help_text="Distance en km", max_digits=10
             ),
         ),
         migrations.AlterField(
             model_name="itinerary",
             name="duration",
             field=models.DecimalField(
-                decimal_places=2, help_text="Durée en heures", max_digits=5
+                decimal_places=2, help_text="Durée en heures", max_digits=10
             ),
         ),
         migrations.AlterField(
