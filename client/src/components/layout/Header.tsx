@@ -4,10 +4,14 @@ import React from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Typography from "@/components/typography";
 import { NavigationButton } from "@/components/layout/navigation-button";
+import { useAuth } from "@/contexts/AuthContext";
+import { LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function Header() {
   const router = useRouter();
   const pathname = usePathname();
+  const { isAuthenticated, logout } = useAuth();
 
   const showBackButton = pathname !== "/";
 
@@ -39,6 +43,19 @@ export function Header() {
       {/* Left: Back Button */}
       {showBackButton && (
         <NavigationButton variant="back" className="absolute left-6 top-6" />
+      )}
+
+      {/* Right: Logout Button (Only if authenticated) */}
+      {isAuthenticated && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-6 top-6 text-accent hover:bg-white/10"
+          onClick={logout}
+          title="Se déconnecter"
+        >
+          <LogOut className="h-5 w-5" />
+        </Button>
       )}
 
       <div className="flex items-center w-full relative justify-center">

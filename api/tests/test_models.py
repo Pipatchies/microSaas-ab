@@ -44,14 +44,14 @@ class TestFoodPlaceModel:
             name="Lieu 1",
             longitude=1.0,
             latitude=1.0,
-            mapbox_id="unique-id-123",
+            mapbox_id=123456,
         )
         with pytest.raises(Exception):
             FoodPlace.objects.create(
                 name="Lieu 2",
                 longitude=2.0,
                 latitude=2.0,
-                mapbox_id="unique-id-123",
+                mapbox_id=123456,
             )
 
 

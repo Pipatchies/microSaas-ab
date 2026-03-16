@@ -22,13 +22,13 @@ pre-commit:
     backend-format:
       root: "api"
       glob: "**/*.py"
-      run: black {staged_files}
+      run: if [ -f "./env/Scripts/ruff.exe" ]; then ./env/Scripts/ruff.exe format {staged_files}; else ./env/bin/ruff format {staged_files}; fi
       stage_fixed: true
 
-    backend-check:
+    backend-lint:
       root: "api"
       glob: "**/*.py"
-      run: docker-compose exec -T api python manage.py check
+      run: if [ -f "./env/Scripts/ruff.exe" ]; then ./env/Scripts/ruff.exe check --fix {staged_files}; else ./env/bin/ruff check --fix {staged_files}; fi
 
 commit-msg:
   commands:

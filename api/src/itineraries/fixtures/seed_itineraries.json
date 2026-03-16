@@ -3,15 +3,17 @@
     "model": "itineraries.Itinerary",
     "pk": 1,
     "fields": {
-      "title": "Boucle du Cassoulet \u2013 Castelnaudary",
+      "title": "Boucle du Cassoulet",
       "type": "Rando",
-      "zone": "Occitanie \u2013 Lauragais",
-      "distance": 7.8,
-      "duration": 2.0,
+      "zone": "Occitanie",
+      "distance": "7.80",
+      "duration": "2.00",
       "difficulty": "Facile",
       "diet": "Omnivore",
       "speciality": "Cassoulet traditionnel",
-      "facts": "Une boucle douce autour du canal du Midi et des collines du Lauragais, berceau du cassoulet."
+      "facts": "Une boucle douce autour du canal du Midi et des collines du Lauragais, berceau du cassoulet.",
+      "user": null,
+      "favorites": []
     }
   },
   {
@@ -20,13 +22,15 @@
     "fields": {
       "title": "Tour des Vignes de Saint-\u00c9milion",
       "type": "V\u00e9lo",
-      "zone": "Nouvelle-Aquitaine \u2013 Gironde",
-      "distance": 27.8,
-      "duration": 2.0,
+      "zone": "Nouvelle-Aquitaine",
+      "distance": "27.80",
+      "duration": "2.00",
       "difficulty": "Difficile",
       "diet": "Omnivore",
       "speciality": "Vins & cannel\u00e9s bordelais",
-      "facts": "Parcours vallonn\u00e9 \u00e0 travers les vignobles class\u00e9s UNESCO."
+      "facts": "Parcours vallonn\u00e9 \u00e0 travers les vignobles class\u00e9s UNESCO.",
+      "user": null,
+      "favorites": []
     }
   },
   {
@@ -35,13 +39,15 @@
     "fields": {
       "title": "Route des Cr\u00eates \u2013 Vosges",
       "type": "Moto",
-      "zone": "Grand Est \u2013 Vosges",
-      "distance": 53.4,
-      "duration": 2.0,
+      "zone": "Grand Est",
+      "distance": "53.40",
+      "duration": "2.00",
       "difficulty": "Difficile",
       "diet": "Omnivore",
       "speciality": "Munster fermier",
-      "facts": "Un des plus beaux itin\u00e9raires moto de France, paysages alpins."
+      "facts": "Un des plus beaux itin\u00e9raires moto de France, paysages alpins.",
+      "user": null,
+      "favorites": []
     }
   },
   {
@@ -50,13 +56,15 @@
     "fields": {
       "title": "Balade sur les Remparts",
       "type": "Rando",
-      "zone": "Bretagne \u2013 Saint-Malo",
-      "distance": 5.2,
-      "duration": 1.5,
+      "zone": "Bretagne",
+      "distance": "5.20",
+      "duration": "1.50",
       "difficulty": "Facile",
       "diet": "V\u00e9gan",
       "speciality": "Kouign-amann v\u00e9g\u00e9tal",
-      "facts": "Promenade iod\u00e9e avec vue sur l'oc\u00e9an et la cit\u00e9 corsaire."
+      "facts": "Promenade iod\u00e9e avec vue sur l'oc\u00e9an et la cit\u00e9 corsaire.",
+      "user": null,
+      "favorites": []
     }
   },
   {
@@ -66,12 +74,14 @@
       "title": "Echapp\u00e9e aux Volcans",
       "type": "V\u00e9lo",
       "zone": "Auvergne",
-      "distance": 42.1,
-      "duration": 4.5,
+      "distance": "42.10",
+      "duration": "4.50",
       "difficulty": "Moyen",
       "diet": "V\u00e9g\u00e9tarien",
       "speciality": "Fondue de Saint-Nectaire",
-      "facts": "Incursion au coeur du parc des volcans d'Auvergne, pr\u00e9voyez des mollets."
+      "facts": "Incursion au coeur du parc des volcans d'Auvergne, pr\u00e9voyez des mollets.",
+      "user": null,
+      "favorites": []
     }
   }
 ]

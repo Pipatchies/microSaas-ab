@@ -4,8 +4,11 @@ import { Home, Users, Heart, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useAuth } from "@/contexts/AuthContext";
+
 export function Footer() {
   const pathname = usePathname();
+  const { isAuthenticated } = useAuth();
 
   if (pathname === "/itineraries/create" || pathname === "/") {
     return null;
@@ -52,12 +55,20 @@ export function Footer() {
           <Heart className={getIconClass("/favorites")} />
         </Link>
         <Link
-          href="/profile"
-          className={`group flex flex-col items-center gap-1 transition-colors ${getLinkClass(
-            "/profile",
-          )}`}
+          href={isAuthenticated ? "/profile" : "/login"}
+          className={`group flex flex-col items-center gap-1 transition-colors ${
+            pathname === "/profile" || pathname === "/login"
+              ? "text-secondary"
+              : "text-white hover:text-white"
+          }`}
         >
-          <User className={getIconClass("/profile")} />
+          <User
+            className={`h-6 w-6 transition-colors group-hover:fill-white ${
+              pathname === "/profile" || pathname === "/login"
+                ? "fill-white"
+                : ""
+            }`}
+          />
         </Link>
       </nav>
     </footer>

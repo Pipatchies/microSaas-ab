@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("itineraries", "0001_initial"),
         ("places", "__first__"),
