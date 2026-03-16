@@ -8,6 +8,7 @@ database configuration, and static files settings.
 
 import sys
 from pathlib import Path
+from datetime import timedelta
 import environ
 import dj_database_url
 
@@ -49,13 +50,41 @@ INSTALLED_APPS = [
     "core",
     "itineraries",
     "places",
+    "users",
     "corsheaders",
     "rest_framework",
+    "rest_framework_simplejwt",
+    "django_filters",
     "drf_spectacular",
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True  # In production, specify allowed origins
+CORS_ALLOW_CREDENTIALS = True
+
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "users.authentication.JWTAuthenticationFromCookie",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+}
+
+# JWT Cookie Settings
+JWT_AUTH_COOKIE = "access_token"
+JWT_AUTH_REFRESH_COOKIE = "refresh_token"
+JWT_AUTH_SAMESITE = "Lax"
+JWT_AUTH_SECURE = False  # Set to True in production (HTTPS)
+JWT_AUTH_HTTPONLY = True
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "SIGNING_KEY": env("JWT_SECRET_KEY", default=SECRET_KEY),
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 SPECTACULAR_SETTINGS = {

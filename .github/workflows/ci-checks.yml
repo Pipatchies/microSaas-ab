@@ -20,26 +20,23 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: "pip"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install flake8 pylint black pytest pytest-django pytest-cov pip-audit
+          pip install pytest pytest-django pytest-cov pip-audit ruff
 
       - name: Security audit (pip-audit)
         run: pip-audit
 
-      - name: Lint PEP8 (flake8)
-        run: flake8 . --max-line-length=120 --exclude=migrations,__pycache__,.git
+      - name: Linting check (ruff)
+        run: ruff check .
 
-      - name: Format check (black)
-        run: black --check .
-
-      - name: Static analysis (pylint)
-        run: cd src && pylint config core itineraries places --fail-under=7.0
+      - name: Format check (ruff)
+        run: ruff format --check .
 
       - name: Run tests with coverage (pytest)
         run: pytest --cov=src --cov-report=term-missing --disable-warnings -q
@@ -61,7 +58,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: "pnpm"
 
       - name: Install dependencies

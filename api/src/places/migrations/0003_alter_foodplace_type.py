@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("places", "0002_alter_foodplace_mapbox_id"),
     ]

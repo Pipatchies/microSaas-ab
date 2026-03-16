@@ -1,0 +1,79 @@
+[
+  {
+    "model": "itineraries.comment",
+    "pk": 1,
+    "fields": {
+      "itinerary": 1,
+      "user": null,
+      "review": 5,
+      "content": "Superbe randonnée, le cassoulet à l'arrivée était incroyable !",
+      "created_at": "2024-03-09T10:00:00Z"
+    }
+  },
+  {
+    "model": "itineraries.comment",
+    "pk": 2,
+    "fields": {
+      "itinerary": 1,
+      "user": null,
+      "review": 4,
+      "content": "Très sympa, mais un peu longuet au milieu.",
+      "created_at": "2024-03-09T11:30:00Z"
+    }
+  },
+  {
+    "model": "itineraries.comment",
+    "pk": 3,
+    "fields": {
+      "itinerary": 2,
+      "user": null,
+      "review": 5,
+      "content": "Magnifiques paysages dans les vignes.",
+      "created_at": "2024-03-09T12:15:00Z"
+    }
+  },
+  {
+    "model": "itineraries.comment",
+    "pk": 4,
+    "fields": {
+      "itinerary": 3,
+      "user": null,
+      "review": 5,
+      "content": "Les routes des Vosges en moto, un régal absolu. Le munster est très fort !",
+      "created_at": "2024-03-09T14:45:00Z"
+    }
+  },
+  {
+    "model": "itineraries.comment",
+    "pk": 5,
+    "fields": {
+      "itinerary": 3,
+      "user": null,
+      "review": 3,
+      "content": "Bien, mais beaucoup de monde sur la route en été.",
+      "created_at": "2024-03-09T15:20:00Z"
+    }
+  },
+  {
+    "model": "itineraries.comment",
+    "pk": 6,
+    "fields": {
+      "itinerary": 4,
+      "user": null,
+      "review": 4,
+      "content": "Une belle balade accessible avec une vue sur l'océan magnifique.",
+      "created_at": "2024-03-09T16:05:00Z"
+    }
+  },
+  {
+    "model": "itineraries.comment",
+    "pk": 7,
+    "fields": {
+      "itinerary": 5,
+      "user": null,
+      "review": 5,
+      "content": "Des montées difficiles mais qui valent la peine. La fondue était parfaite en réconfort.",
+      "created_at": "2024-03-09T17:50:00Z"
+    }
+  }
+]

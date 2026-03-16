@@ -29,6 +29,7 @@ export const metadata: Metadata = {
 };
 
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export default function RootLayout({
   children,
@@ -40,10 +41,10 @@ export default function RootLayout({
       <body
         className={`${nanumMyeongjo.variable} ${rubik.variable} ${libreFranklin.variable} antialiased`}
       >
-        <Header />
-        <main className="pb-24 pt-30 min-h-screen">{children}</main>
-        <Toaster />
-        <Footer />
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );
