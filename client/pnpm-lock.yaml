@@ -8,6 +8,7 @@ overrides:
   js-yaml: ^4.1.1
   tar: ^7.5.7
   csstype: 3.2.3
+  flatted: ">=3.4.0"
 
 importers:
   .:
@@ -3278,10 +3279,10 @@ packages:
       }
     engines: { node: ">=16" }
 
-  flatted@3.3.3:
+  flatted@3.4.1:
     resolution:
       {
-        integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==,
+        integrity: sha512-IxfVbRFVlV8V/yRaGzk0UVIcsKKHMSfYw66T/u4nTwlWteQePsxe//LjudR1AMX4tZW3WFCh3Zqa/sjlqpbURQ==,
       }
 
   for-each@0.3.5:
@@ -4956,6 +4957,7 @@ packages:
       {
         integrity: sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==,
       }
+    engines: { node: ">=6" }
 
   tinybench@2.9.0:
     resolution:
@@ -7355,10 +7357,10 @@ snapshots:
 
   flat-cache@4.0.1:
     dependencies:
-      flatted: 3.3.3
+      flatted: 3.4.1
       keyv: 4.5.4
 
-  flatted@3.3.3: {}
+  flatted@3.4.1: {}
 
   for-each@0.3.5:
     dependencies:
