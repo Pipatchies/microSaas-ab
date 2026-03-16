@@ -58,7 +58,8 @@
     "overrides": {
       "js-yaml": "^4.1.1",
       "tar": "^7.5.7",
-      "csstype": "3.2.3"
+      "csstype": "3.2.3",
+      "flatted": ">=3.4.0"
     }
   }
 }
