@@ -21,7 +21,7 @@ services:
     restart: always
     ports:
       - "${API_PORT}:8800"
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8800"
+    command: sh -c "python manage.py migrate && python manage.py create_superuser_if_none && python manage.py runserver 0.0.0.0:8800"
     env_file:
       - .env
     volumes:
