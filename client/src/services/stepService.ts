@@ -63,7 +63,6 @@ const realApi = {
       if (payload.itinerary_id && !payload.itinerary) {
         payload.itinerary = payload.itinerary_id;
       }
-      if (!payload.picture) delete payload.picture;
       if (!payload.description) delete payload.description;
 
       if (payload.id_foodplace) {
@@ -71,7 +70,21 @@ const realApi = {
       }
       delete payload.foodplace;
 
-      const data = await apiClient.post<any>("/api/steps/", payload);
+      let body: any;
+      if (payload.picture instanceof File) {
+        const formData = new FormData();
+        Object.keys(payload).forEach((key) => {
+          if (payload[key] !== undefined && payload[key] !== null) {
+            formData.append(key, payload[key]);
+          }
+        });
+        body = formData;
+      } else {
+        if (!payload.picture) delete payload.picture;
+        body = payload;
+      }
+
+      const data = await apiClient.post<any>("/api/steps/", body);
       return mapBackendToFrontend(data);
     } catch (error: any) {
       console.error("Error creating step:", error);

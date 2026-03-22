@@ -23,10 +23,12 @@ export const apiClient = {
       url += `?${searchParams.toString()}`;
     }
 
+    const isFormData = init.body instanceof FormData;
+
     const response = await fetch(url, {
       ...init,
       headers: {
-        "Content-Type": "application/json",
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
         ...init.headers,
       },
       credentials: "include", // Essential for HttpOnly cookies
@@ -94,7 +96,7 @@ export const apiClient = {
     return this.request<T>(endpoint, {
       ...options,
       method: "POST",
-      body: JSON.stringify(body),
+      body: body instanceof FormData ? body : JSON.stringify(body),
     });
   },
 
@@ -102,7 +104,7 @@ export const apiClient = {
     return this.request<T>(endpoint, {
       ...options,
       method: "PUT",
-      body: JSON.stringify(body),
+      body: body instanceof FormData ? body : JSON.stringify(body),
     });
   },
 
@@ -110,7 +112,7 @@ export const apiClient = {
     return this.request<T>(endpoint, {
       ...options,
       method: "PATCH",
-      body: JSON.stringify(body),
+      body: body instanceof FormData ? body : JSON.stringify(body),
     });
   },
 

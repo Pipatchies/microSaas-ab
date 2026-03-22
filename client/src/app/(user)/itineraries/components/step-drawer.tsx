@@ -23,7 +23,7 @@ import { CtaButton } from "@/components/cta-button";
 export interface StepDrawerData {
   name: string;
   description: string;
-  picture?: string;
+  picture?: string | File;
   foodplace?: Omit<FoodPlace, "id_foodplace">;
 }
 
@@ -39,12 +39,7 @@ const stepDrawerSchema = z
   .object({
     name: z.string().min(1, "Le nom de l'étape est requis"),
     description: z.string().optional(),
-    picture: z
-      .string()
-      .optional()
-      .refine((val) => !val || /^https?:\/\/.+/.test(val), {
-        message: "L'URL de la photo doit commencer par http:// ou https://",
-      }),
+    pictureFile: z.any().optional(),
     hasFoodPlace: z.boolean(),
     fpName: z.string().optional(),
     fpType: z.string().optional(),
@@ -74,7 +69,7 @@ export default function StepDrawer({
     defaultValues: {
       name: defaultStepName,
       description: "",
-      picture: "",
+      pictureFile: undefined,
       hasFoodPlace: false,
       fpName: "",
       fpType: "",
@@ -97,7 +92,7 @@ export default function StepDrawer({
       reset({
         name: defaultStepName,
         description: "",
-        picture: "",
+        pictureFile: undefined,
         hasFoodPlace: false,
         fpName: "",
         fpType: "",
@@ -110,7 +105,7 @@ export default function StepDrawer({
     onSave({
       name: data.name,
       description: data.description || "",
-      picture: data.picture || undefined,
+      picture: data.pictureFile || undefined,
       foodplace: data.hasFoodPlace
         ? {
             name: data.fpName || "",
@@ -167,16 +162,18 @@ export default function StepDrawer({
               <div className="space-y-2">
                 <Typography variant="label">Photo (Optionnel)</Typography>
                 <Input
-                  type="text"
-                  {...register("picture")}
-                  placeholder="https://..."
-                  className={`h-10 text-sm text-primary border-secondary focus-visible:ring-secondary/50 bg-accent ${errors.picture ? "border-red-500" : ""}`}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      methods.setValue("pictureFile", file);
+                    } else {
+                      methods.setValue("pictureFile", undefined);
+                    }
+                  }}
+                  className={`h-10 text-sm text-primary border-secondary focus-visible:ring-secondary/50 bg-accent`}
                 />
-                {errors.picture && (
-                  <span className="text-red-500 text-xs">
-                    {errors.picture.message}
-                  </span>
-                )}
               </div>
 
               <div className="flex items-center gap-2 pt-2">

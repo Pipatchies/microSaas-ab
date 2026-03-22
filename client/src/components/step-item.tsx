@@ -5,7 +5,7 @@ import Typography from "@/components/typography";
 export interface StepItemData {
   name: string;
   description?: string;
-  picture?: string;
+  picture?: string | File;
   distanceFromStart?: number;
   foodplace?: {
     name: string;
@@ -52,7 +52,11 @@ export function StepItem({ step, index }: StepItemProps) {
             <div className="flex-none shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={step.picture}
+                src={
+                  typeof step.picture === "string"
+                    ? step.picture
+                    : URL.createObjectURL(step.picture)
+                }
                 alt={step.name}
                 className="w-[140px] h-[140px] rounded-xl object-cover shadow-sm"
               />
