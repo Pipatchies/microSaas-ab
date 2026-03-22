@@ -3,6 +3,8 @@ Tests unitaires des serializers DRF.
 Vérifie les payloads valides et invalides (sans accès en base de données).
 """
 
+import io
+from PIL import Image
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
 from places.models import FoodPlace
@@ -180,18 +182,24 @@ class TestStepSerializer:
     def test_picture_valid_file_accepted(self):
         """Un fichier image valide pour 'picture' est accepté."""
         itinerary = self._create_itinerary()
-        image = SimpleUploadedFile(
+        file_obj = io.BytesIO()
+        image = Image.new("RGB", (1, 1), color="red")
+        image.save(file_obj, "jpeg")
+        file_obj.seek(0)
+
+        uploaded_file = SimpleUploadedFile(
             name="test_image.jpg",
-            content=b"fake_image_content",
+            content=file_obj.read(),
             content_type="image/jpeg",
         )
+
         data = {
             "itinerary": itinerary.pk,
             "name": "Étape Photo",
             "longitude": 2.3554,
             "latitude": 48.8809,
             "step_order": 1,
-            "picture": image,
+            "picture": uploaded_file,
         }
         serializer = StepSerializer(data=data)
         assert serializer.is_valid(), serializer.errors
