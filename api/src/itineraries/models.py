@@ -44,7 +44,7 @@ class Step(models.Model):
     description = models.TextField(blank=True, null=True)
     longitude = models.FloatField()
     latitude = models.FloatField()
-    picture = models.URLField(max_length=200, blank=True, null=True)
+    picture = models.ImageField(upload_to="steps/", blank=True, null=True)
     step_order = models.PositiveIntegerField()
     food_place = models.ForeignKey(
         "places.FoodPlace",
