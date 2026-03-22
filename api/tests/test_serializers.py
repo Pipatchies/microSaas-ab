@@ -4,6 +4,7 @@ Vérifie les payloads valides et invalides (sans accès en base de données).
 """
 
 import pytest
+from django.core.files.uploadedfile import SimpleUploadedFile
 from places.models import FoodPlace
 from places.serializers import FoodPlaceSerializer
 from itineraries.models import Itinerary
@@ -176,31 +177,21 @@ class TestStepSerializer:
         assert not serializer.is_valid()
         assert "itinerary" in serializer.errors
 
-    def test_picture_must_be_valid_url(self):
-        """Le champ 'picture' doit être une URL valide."""
+    def test_picture_valid_file_accepted(self):
+        """Un fichier image valide pour 'picture' est accepté."""
         itinerary = self._create_itinerary()
+        image = SimpleUploadedFile(
+            name="test_image.jpg",
+            content=b"fake_image_content",
+            content_type="image/jpeg",
+        )
         data = {
             "itinerary": itinerary.pk,
             "name": "Étape Photo",
             "longitude": 2.3554,
             "latitude": 48.8809,
             "step_order": 1,
-            "picture": "non-une-url-valide",
-        }
-        serializer = StepSerializer(data=data)
-        assert not serializer.is_valid()
-        assert "picture" in serializer.errors
-
-    def test_picture_valid_url_accepted(self):
-        """Une URL valide pour 'picture' est acceptée."""
-        itinerary = self._create_itinerary()
-        data = {
-            "itinerary": itinerary.pk,
-            "name": "Étape Photo",
-            "longitude": 2.3554,
-            "latitude": 48.8809,
-            "step_order": 1,
-            "picture": "https://example.com/photo.jpg",
+            "picture": image,
         }
         serializer = StepSerializer(data=data)
         assert serializer.is_valid(), serializer.errors
