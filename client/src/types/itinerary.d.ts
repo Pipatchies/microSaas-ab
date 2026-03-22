@@ -31,7 +31,7 @@ export type Step = {
   description: string;
   longitude: number;
   latitude: number;
-  picture?: string;
+  picture?: File | string | null;
   step_order: number;
   foodplace?: FoodPlace | null;
 };
