@@ -1,13 +1,13 @@
 const getBaseUrl = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL;
+  // Côté serveur (SSR), on privilégie l'URL interne si elle est définie.
+  // Côté client, seul NEXT_PUBLIC_API_URL sera exposé.
+  const url = process.env.INTERNAL_API_URL || process.env.NEXT_PUBLIC_API_URL;
+
   if (!url) {
-    throw new Error(
-      "NEXT_PUBLIC_API_URL is not defined in environment variables",
-    );
+    throw new Error("API URL is not defined in environment variables");
   }
   return url;
 };
-
 interface FetchOptions extends RequestInit {
   params?: Record<string, string>;
   _retry?: boolean;
@@ -34,7 +34,11 @@ export const apiClient = {
 
     if (!response.ok) {
       // Logic for Refresh Token Handling
-      if (response.status === 401 && !_retry) {
+      const isAuthEndpoint =
+        endpoint.includes("/auth/login") ||
+        endpoint.includes("/auth/token/refresh") ||
+        endpoint.includes("/auth/register");
+      if (response.status === 401 && !_retry && !isAuthEndpoint) {
         options._retry = true;
 
         try {
