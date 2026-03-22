@@ -76,8 +76,8 @@ REST_FRAMEWORK = {
 # JWT Cookie Settings
 JWT_AUTH_COOKIE = "access_token"
 JWT_AUTH_REFRESH_COOKIE = "refresh_token"
-JWT_AUTH_SAMESITE = "Lax"
-JWT_AUTH_SECURE = False  # Set to True in production (HTTPS)
+JWT_AUTH_SAMESITE = env("JWT_AUTH_SAMESITE", default="Lax" if DEBUG else "None")
+JWT_AUTH_SECURE = env.bool("JWT_AUTH_SECURE", default=not DEBUG)
 JWT_AUTH_HTTPONLY = True
 
 SIMPLE_JWT = {
