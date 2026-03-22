@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "drf_spectacular",
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True  # In production, specify allowed origins
@@ -186,7 +188,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # WhiteNoise — compression et cache des fichiers statiques en production
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -221,3 +223,11 @@ if "pytest" in sys.modules:
             "NAME": BASE_DIR / "test_db.sqlite3",
         }
     }
+
+# Cloudinary settings
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": env("CLOUDINARY_CLOUD_NAME", default=""),
+    "API_KEY": env("CLOUDINARY_API_KEY", default=""),
+    "API_SECRET": env("CLOUDINARY_API_SECRET", default=""),
+}
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
